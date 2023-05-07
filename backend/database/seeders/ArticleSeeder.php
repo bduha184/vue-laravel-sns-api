@@ -13,6 +13,5 @@ class ArticleSeeder extends Seeder
     public function run(): void
     {
         //
-        
     }
 }

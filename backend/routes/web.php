@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -10,17 +8,14 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
-// Route::get('/{any}',function(){
-//     return view('app');
-// })->where('any','.*');
-Route::get('/',function(){
-    return view('app');
+
+Route::get('/', function () {
+    return ['Laravel' => app()->version()];
 });
 
-// Route::post('/register', [LoginController::class, 'register']);
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout']);
+
+require __DIR__.'/auth.php';

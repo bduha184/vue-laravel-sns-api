@@ -4,7 +4,7 @@ import { ref,onMounted } from 'vue';
 import Card from '../components/Card.vue'
 const articles = ref([]);
 
-const getArticles =() =>{
+const getArticles = () =>{
   fetch('http://localhost:8000/api/articles')
   .then(res=>res.json())
   .then(data=>articles.value = data)

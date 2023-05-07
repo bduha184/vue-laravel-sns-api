@@ -10,7 +10,7 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected $fillable=[
         'title',
         'body'
     ];
@@ -18,5 +18,4 @@ class Article extends Model
     public function user():BelongsTo{
         return $this->belongsTo(User::class);
     }
-
 }

@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 </script>
 <template>
   <nav class="navbar navbar-expand navbar-dark blue-gradient">
-    <RouterLink to="/articles" class="navbar-brand"><i class="far fa-sticky-note mr-1"></i>memo</RouterLink>
+    <RouterLink to="/" class="navbar-brand"><i class="far fa-sticky-note mr-1"></i>memo</RouterLink>
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
@@ -17,8 +17,6 @@ import { RouterLink } from 'vue-router'
       <li class="nav-item">
         <RouterLink to="/create" class="nav-link" href=""><i class="fas fa-pen mr-1"></i>投稿する</RouterLink>
       </li>
-
-      <!-- Dropdown -->
       <li class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
@@ -47,7 +45,6 @@ import { RouterLink } from 'vue-router'
         </div>
       </li>
       <form id="logout-button" method="POST" action=""></form>
-      <!-- Dropdown -->
     </ul>
   </nav>
 </template>

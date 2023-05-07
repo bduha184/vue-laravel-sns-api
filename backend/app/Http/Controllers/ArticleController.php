@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
-use Illuminate\Http\Response;
 
 class ArticleController extends Controller
 {
@@ -14,9 +13,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
-        $articles=Article::latest()->with('user')->get();
-        return $articles;
+        return Article::latest()->with('user')->get();
     }
 
     /**
@@ -32,26 +29,15 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        Article::create($request-al());
-        return response()->json([
-            "message"=>"created successfully"
-        ],Request::HTTP_CREATED);
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Article $article)
     {
-        if($id){
-            $article = Article::find($id);
-
-            return $article;
-        }else {
-            return response()->json([
-                'message'=>"Article not found"
-            ],Response::HTTP_NOT_FOUND);
-        }
+        //
     }
 
     /**

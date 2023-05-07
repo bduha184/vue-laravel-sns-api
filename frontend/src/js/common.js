@@ -1,3 +1,5 @@
+import Axios from 'axios';
+
 const getDays = (day) => {
   const date = new Date(day);
   const y = date.getFullYear();
@@ -8,5 +10,12 @@ const getDays = (day) => {
   return `${y}/${m}/${d} ${h}:${i}`;
 }
 
+// const axios = Axios.create({
+//   baseURL: localhost,
+//   headers: {
+//       'X-Requested-With': 'XMLHttpRequest',
+//   },
+//   withCredentials: true,
+// })
 
 export {getDays};

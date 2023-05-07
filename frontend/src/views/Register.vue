@@ -1,22 +1,50 @@
 <script setup>
 import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 import router from '../js/router';
+import apiClient from 'axios';
 
 const user = ref({});
 
-const submit = (name,email,password) => {
-  fetch('http://localhost:8000/api/users',{
-    method:'POST',
-    headers:{
-      'Content-type':'application/json'
+function register(name,email,password){
+  fetch('http://localhost:8000/api/register', {
+    // credentials:"include",
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json'
     },
-    body:JSON.stringify({
+    body: JSON.stringify({
       name:name,
       email:email,
       password:password
     })
-  }).then(res=>router.push('./index'));
+  })
+  // .then((res)=>console.log(res));
+  .then((res)=>router.push('./register'))
 }
+
+// const register = async(name,email,password) =>{
+//     const params = {
+//       name: name,
+//       email: email,
+//       password:password,
+//       // password_confirmation: password_confirmation
+//     }
+
+//     apiClient.defaults.withCredentials = true;
+//     await apiClient.get('/sanctum/csrf-cookie').then(async (response) => {
+//       await apiClient.post('/api/register', params)
+//         .then((response) => {
+//           if (response.status == 200) {
+//             router.push('articles');
+//           }
+//         })
+//         .catch((error) => {
+//           console.log(error);
+//         });
+//     });
+
+//   }
 
 </script>
 <template>
@@ -46,23 +74,25 @@ const submit = (name,email,password) => {
                 </div>
                 <div class="md-form">
                   <label for="password">パスワード</label>
-                  <input class="form-control" type="password" id="password" name="password" required>
-                </div>
-                <div class="md-form">
-                  <label for="password_confirmation">パスワード(確認)</label>
-                  <input class="form-control" type="password" id="password_confirmation" name="password_confirmation" required
-                  v-model="user.password"
+                  <input class="form-control" type="password" id="password" name="password" required
+                    v-model="user.password"
                   >
                 </div>
+                <!-- <div class="md-form">
+                  <label for="password_confirmation">パスワード(確認)</label>
+                  <input class="form-control" type="password" id="password_confirmation" name="password_confirmation" required
+                  v-model="user.password_confirmation"
+                  >
+                </div> -->
                 <button
                 class="btn btn-block blue-gradient mt-2 mb-2"
-                @click="submit(user.name,user.email,user.password)"
+                @click="register(user.name,user.email,user.password)"
                 >
                 ユーザー登録
               </button>
               </form>
               <div class="mt-0">
-                <a href="" class="card-text">ログインはこちら</a>
+                <RouterLink to="/login" class="card-text">ログインはこちら</RouterLink>
               </div>
 
             </div>

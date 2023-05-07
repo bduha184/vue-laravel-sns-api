@@ -36,3 +36,28 @@ composer require predis/predis
 php artisan migrate:fresh --seed
 php artisan route:list
 exit
+cd backend
+php artisan route:list
+composer require laravel/breeze --dev
+php artisan breeze:install
+npm install
+php artisan route:list
+exit
+cd backend
+php artisan route:list
+exit
+cd backend
+php artisan route:list
+php artisan make:request StoreUserRequest
+php artisan route:list
+php artisan route:list
+cd ..
+ls
+composer create-poject laravel/laravel backend
+composer require laravel/breeze --dev
+cd backend
+composer require laravel/breeze --dev
+php artisan breeze:install
+npm run dev
+npm install
+exit

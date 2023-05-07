@@ -17,9 +17,7 @@ class ArticleFactory extends Factory
     public function definition(): array
     {
         return [
-            'title'=>fake()->word(),
-            'body'=>fake()->word(),
-            'user_id'=>fake()->numberBetween($min=1,$max=10),
+            //
         ];
     }
 }
