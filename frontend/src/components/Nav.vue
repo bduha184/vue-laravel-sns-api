@@ -11,11 +11,11 @@ import { RouterLink } from 'vue-router'
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="">ログイン</a>
+        <RouterLink to="/login" class="nav-link" href="">ログイン</RouterLink>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href=""><i class="fas fa-pen mr-1"></i>投稿する</a>
+        <RouterLink to="/create" class="nav-link" href=""><i class="fas fa-pen mr-1"></i>投稿する</RouterLink>
       </li>
 
       <!-- Dropdown -->

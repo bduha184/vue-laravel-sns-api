@@ -15,8 +15,7 @@ class ArticleController extends Controller
     public function index()
     {
         //
-        $articles=Article::latest()->get();
-
+        $articles=Article::latest()->with('user')->get();
         return $articles;
     }
 
@@ -42,9 +41,17 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show($id)
     {
-        //
+        if($id){
+            $article = Article::find($id);
+
+            return $article;
+        }else {
+            return response()->json([
+                'message'=>"Article not found"
+            ],Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**

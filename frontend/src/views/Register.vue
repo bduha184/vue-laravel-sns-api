@@ -1,8 +1,22 @@
 <script setup>
 import { ref } from 'vue';
-import router from '../router/router';
+import router from '../js/router';
 
 const user = ref({});
+
+const submit = (name,email,password) => {
+  fetch('http://localhost:8000/api/users',{
+    method:'POST',
+    headers:{
+      'Content-type':'application/json'
+    },
+    body:JSON.stringify({
+      name:name,
+      email:email,
+      password:password
+    })
+  }).then(res=>router.push('./index'));
+}
 
 </script>
 <template>
@@ -18,12 +32,17 @@ const user = ref({});
               <form method="POST" action="">
                 <div class="md-form">
                   <label for="name">ユーザー名</label>
-                  <input class="form-control" type="text" id="name" name="name" required value="{{ old('name') }}">
+                  <input
+                  class="form-control" type="text" id="name" name="name" required
+                  v-model="user.name"
+                  >
                   <small>英数字3〜16文字(登録後の変更はできません)</small>
                 </div>
                 <div class="md-form">
                   <label for="email">メールアドレス</label>
-                  <input class="form-control" type="text" id="email" name="email" required value="{{ old('email') }}" >
+                  <input class="form-control" type="text" id="email" name="email" required
+                  v-model="user.email"
+                  >
                 </div>
                 <div class="md-form">
                   <label for="password">パスワード</label>
@@ -31,9 +50,16 @@ const user = ref({});
                 </div>
                 <div class="md-form">
                   <label for="password_confirmation">パスワード(確認)</label>
-                  <input class="form-control" type="password" id="password_confirmation" name="password_confirmation" required>
+                  <input class="form-control" type="password" id="password_confirmation" name="password_confirmation" required
+                  v-model="user.password"
+                  >
                 </div>
-                <button class="btn btn-block blue-gradient mt-2 mb-2" type="submit">ユーザー登録</button>
+                <button
+                class="btn btn-block blue-gradient mt-2 mb-2"
+                @click="submit(user.name,user.email,user.password)"
+                >
+                ユーザー登録
+              </button>
               </form>
               <div class="mt-0">
                 <a href="" class="card-text">ログインはこちら</a>

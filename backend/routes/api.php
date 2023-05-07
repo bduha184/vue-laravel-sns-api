@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,12 +19,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::post('/register',['store']);
-Route::post('/login',[ArticleController::class,'store']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
 
-
-Route::get('/articles',[ArticleController::class,'index']);
+Route::get('/articles', [ArticleController::class, 'index']);
+// Route::post('/register',[UserController::class,'store']);
+Route::get('/articles/{id}', [ArticleController::class, 'show']);
