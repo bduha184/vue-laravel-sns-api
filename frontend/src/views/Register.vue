@@ -1,69 +1,30 @@
 <script setup>
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
-import router from "../js/router";
+// import router from "../js/router";
 import axios from "axios";
 
 const user = ref({});
 
+const register =  async (name, email, password) => {
 
-function register(name, email, password) {
-
-  // const api = axios.create({
-  //   baseURL:"http://localhost:8000",
-  //   withCredentials:true,
-  // })
-  // api.get("/sanctum/csrf-cookie")
-  //   .then((res)=>{
-  //     api.post("/api/register",{name,email,password})
-  //       .then(res=>{
-  //         console.log(res);
-  //       })
-  //   })
-  fetch("http://localhost:8000/sanctum/csrf-cookie", {
-    method:'GET',
-    credentials: "include",
+  const api = axios.create({
+    baseURL:"http://localhost:8000",
+    withCredentials:true,
   })
-    .then((res) => {
-      fetch("http://localhost:8000/api/register", {
-        credentials: "include",
-        method: "POST",
-        mode:cors,
-        headers: {
-          "Accept": "application/json",
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password,
-        }),
-      });
+  await api.get("/sanctum/csrf-cookie")
+    .then(async (res) => {
+      await api.post("/api/register",{name,email,password})
+        .then(res=>{
+          if(res.status == 200) {
+            router.push({path:'/'})
+          }
+        })
+        .catch(error=>{
+          console.log(error);
+        })
     })
-    .then((res) => router.push("./"));
 }
-
-// const register = async(name,email,password) =>{
-//     const params = {
-//       name: name,
-//       email: email,
-//       password:password,
-//       // password_confirmation: password_confirmation
-//     }
-
-//     await axios.get('/sanctum/csrf-cookie').then(async (response) => {
-//       await axios.post('/api/register', params)
-//         .then((response) => {
-//           if (response.status == 200) {
-//             router.push('articles');
-//           }
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//         });
-//     });
-
-//   }
 </script>
 <template>
   <div class="container">
@@ -75,7 +36,7 @@ function register(name, email, password) {
             <h2 class="h3 card-title text-center mt-2">ユーザー登録</h2>
 
             <div class="card-text">
-              <form method="POST" action="">
+              <form method="POST">
                 <div class="md-form">
                   <label for="name">ユーザー名</label>
                   <input
@@ -118,6 +79,7 @@ function register(name, email, password) {
                 </div> -->
                 <button
                   class="btn btn-block blue-gradient mt-2 mb-2"
+                  type="button"
                   @click="register(user.name, user.email, user.password)"
                 >
                   ユーザー登録
@@ -128,9 +90,6 @@ function register(name, email, password) {
                   >ログインはこちら</RouterLink
                 >
               </div>
-              <!-- <div class="">
-                <button @click="handleUserClick">ユーザー情報取得</button>
-              </div> -->
             </div>
           </div>
         </div>

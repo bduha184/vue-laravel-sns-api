@@ -1,65 +1,24 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { RouterLink } from "vue-router";
-import router from "../js/router";
+// import router from "../js/router";
 import axios from "axios";
 
 
-const login = () => {
+const login = async (email,password) => {
 
   const api = axios.create({
     baseURL:"http://localhost:8000",
     withCredentials:true,
   })
-  api.get("/sanctum/csrf-cookie")
-    .then((res)=>{
-      api.post("/api/login",{email,password})
+  await api.get("/sanctum/csrf-cookie")
+    .then(async (res)=>{
+     await api.post("/api/login",{email,password})
         .then(res=>{
-          console.log(res);
+          console.log(res.status);
         })
     })
 
-  // const requestOptions = {
-  //   method:'POST',
-  //   // url:'http://localhost:8000/api/login',
-  //   withCredentials: true,
-  //   headers:{
-  //     'Accept':'application/json',
-  //     'Content-Type':'application/json',
-  //   },
-  //   data: JSON.stringify({
-  //       email:email,
-  //       password:password
-  //     })
-  // }
-  // axios
-  //   .get("http://localhost:8000/sanctum/csrf-cookie", {
-  //     withCredentials: true,
-  //   })
-  //   .then((response) => {
-  //     axios('http://localhost:8000/login',requestOptions)
-  //       .then(res => console.log(res.data));
-  //   });
-  // fetch('http://localhost:8000/sanctum/csrf-cookie',{
-  //   method:'GET',
-  //   credentials:"include",
-  // })
-  // .then(res=>{
-  //   fetch('http://localhost:8000/login',{
-  //     method:'POST',
-  //     mode:'cors',
-  //     credentials:"include",
-  //     headers:{
-  //       'Accept':'application/json',
-  //       'Content-type':'application/json',
-  //     },
-  //     body:JSON.stringify({
-  //       email:email,
-  //       password:password
-  //     })
-  //   }).then(res=>router.push('/'));
-
-  // })
 };
 </script>
 
@@ -72,7 +31,7 @@ const login = () => {
           <div class="card-body text-center">
             <h2 class="h3 card-title text-center mt-2">ログイン</h2>
             <div class="card-text">
-              <form method="POST" action="">
+              <form method="POST">
                 <input type="hidden" name="_token" :value="qwer12345" />
                 <div class="md-form">
                   <label for="email">メールアドレス</label>
@@ -100,6 +59,7 @@ const login = () => {
                 <input type="hidden" name="remember" id="remember" value="on" />
                 <button
                   class="btn btn-block blue-gradient mt-2 mb-2"
+                  type="button"
                   @click="login(email, password)"
                 >
                   ログイン
