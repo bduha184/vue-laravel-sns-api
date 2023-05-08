@@ -22,7 +22,6 @@ class StoreArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'name'=>['required','unique'],
            'title'=>['required','min:3','max:20'],
            'body'=>['required','max:1000']
         ];
