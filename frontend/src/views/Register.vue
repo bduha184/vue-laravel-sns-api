@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
-// import router from "../js/router";
+import router from "../js/router";
 import axios from "axios";
 
 const user = ref({});
@@ -16,8 +16,8 @@ const register =  async (name, email, password) => {
     .then(async (res) => {
       await api.post("/api/register",{name,email,password})
         .then(res=>{
-          if(res.status == 200) {
-            router.push({path:'/'})
+          if(res.status == 200){
+            router.push('/')
           }
         })
         .catch(error=>{

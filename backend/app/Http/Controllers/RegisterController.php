@@ -16,6 +16,6 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['created' => true], Response::HTTP_OK);
+        return response()->json( Response::HTTP_OK);
     }
 }

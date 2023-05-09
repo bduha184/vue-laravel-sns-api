@@ -20,17 +20,14 @@ const router = createRouter({
     {
       path: '/register',
       component: Register,
-      // props:true
     },
     {
       path: '/login',
       component: Login,
-      // props:true
     },
     {
       path: '/create',
       component: Create,
-      // props:true
     },
   ]
 })

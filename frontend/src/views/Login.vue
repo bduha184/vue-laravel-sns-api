@@ -1,23 +1,30 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { RouterLink } from "vue-router";
-// import router from "../js/router";
+import router from "../js/router";
 import axios from "axios";
+import { useAuthStore } from "../stores/auth";
+
+const auth = useAuthStore();
 
 
 const login = async (email,password) => {
-
   const api = axios.create({
     baseURL:"http://localhost:8000",
     withCredentials:true,
   })
   await api.get("/sanctum/csrf-cookie")
-    .then(async (res)=>{
-     await api.post("/api/login",{email,password})
-        .then(res=>{
-          console.log(res.status);
-        })
+  .then(async (res)=>{
+    await api.post("/api/login",{email,password})
+    .then(res=>{
+      if(res.status == 200) {
+      auth.setUser(true);
+        // console.log(res.status);
+        router.push('/')
+
+      }
     })
+  })
 
 };
 </script>
@@ -58,8 +65,7 @@ const login = async (email,password) => {
                 </div>
                 <input type="hidden" name="remember" id="remember" value="on" />
                 <button
-                  class="btn btn-block blue-gradient mt-2 mb-2"
-                  type="button"
+                  class="btn btn-block blue-gradient mt-2 mb-2" type="button"
                   @click="login(email, password)"
                 >
                   ログイン

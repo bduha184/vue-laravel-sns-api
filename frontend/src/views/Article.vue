@@ -22,10 +22,6 @@ onMounted(()=> {
 
 <template>
  <div class="container">
-    <div
-    class="card mt-3"
-    >
     <Card :article="article"/>
-    </div>
   </div>
 </template>

@@ -1,6 +1,9 @@
 <script setup>
 import { RouterLink,RouterView } from 'vue-router';
 import { getDays } from '../js/common';
+import { useAuthStore } from '../stores/auth';
+
+const auth = useAuthStore();
 
 defineProps({
   article:Object
@@ -18,7 +21,9 @@ defineProps({
       <div class="font-weight-lighter">{{ getDays(article.created_at) }}</div>
     </div>
 
-      <div class="ml-auto card-text">
+      <div class="ml-auto card-text"
+      v-if="auth.isLoggedIn"
+      >
         <div class="dropdown">
           <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-v"></i>

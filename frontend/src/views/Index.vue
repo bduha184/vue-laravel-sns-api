@@ -9,15 +9,9 @@ const getArticles = () =>{
   .then(res=>res.json())
   .then(data=>articles.value = data)
 }
-// const getUsers =() =>{
-//   fetch('http://localhost:8000/api/users')
-//   .then(res=>res.json())
-//   .then(data=>users.value = data)
-// }
 
 onMounted(()=> {
   getArticles();
-  // getUsers();
 })
 
 
@@ -26,7 +20,6 @@ onMounted(()=> {
 <template>
  <div class="container">
     <div
-    class="card mt-3"
     v-for="article in articles"
     :key="article.id"
     >

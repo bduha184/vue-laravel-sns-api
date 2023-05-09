@@ -32,4 +32,10 @@ class LoginController extends Controller
         return response()->json('User Not Found.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
+    public function logout(){
+        Auth::logout();
+
+        return response()->json(Response::HTTP_OK);
+    }
+
 }
