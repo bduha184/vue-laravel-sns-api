@@ -22,8 +22,8 @@ class ArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'title'=>['required','min:3','max:20'],
-           'body'=>['required','max:1000']
+           'title'=>'required|min:3|max:20',
+           'body'=>'required|max:1000'
         ];
     }
 }

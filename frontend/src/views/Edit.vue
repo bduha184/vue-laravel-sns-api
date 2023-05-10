@@ -38,8 +38,6 @@ const submit = async (title,body) => {
     })
 }
 
-
-
 </script>
 
 <template>

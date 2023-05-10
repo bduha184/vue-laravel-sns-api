@@ -1,91 +1,110 @@
 <script setup>
-import axios from 'axios';
-import { RouterLink,RouterView } from 'vue-router';
-import { getDays } from '../js/common';
-import { useAuthStore } from '../stores/auth';
-
+import axios from "axios";
+import { RouterLink, RouterView } from "vue-router";
+import { getDays } from "../js/common";
+import router from "../js/router";
+import { useAuthStore } from "../stores/auth";
 const auth = useAuthStore();
 
 defineProps({
-  article:Object
-})
+  article: Object,
+});
 const api = axios.create({
-    baseURL:
-})
-
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
+});
 const destroy = async (id) => {
-        await api
-}
-
+  await api.get("/sanctum/csrf-cookie").then(async (res) => {
+    await api.delete(`/api/articles/${id}`)
+    .then((res) => {
+        if(res.status==200) {
+            router.push('/');
+        }
+    });
+    });
+};
 </script>
 
 <template>
   <div class="card mt-3">
-  <div class="card-body d-flex flex-row">
-    <i class="fas fa-user-circle fa-3x mr-1"></i>
-    <div>
-      {{ article.user.name }}
-      <!-- <div class="font-weight-bold">{{ article.user.name }}</div> -->
-      <div class="font-weight-lighter">{{ getDays(article.created_at) }}</div>
-    </div>
+    <div class="card-body d-flex flex-row">
+      <i class="fas fa-user-circle fa-3x mr-1"></i>
+      <div>
+        {{ article.user.name }}
+        <!-- <div class="font-weight-bold">{{ article.user.name }}</div> -->
+        <div class="font-weight-lighter">{{ getDays(article.created_at) }}</div>
+      </div>
 
-      <div class="ml-auto card-text"
-      v-if="auth.isLoggedIn"
-      >
+      <div class="ml-auto card-text" v-if="auth.isLoggedIn">
         <div class="dropdown">
           <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-v"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right">
-            <RouterLink :to="`/articles/${article.id}/edit`" class="dropdown-item"
-
+            <RouterLink
+              :to="`/articles/${article.id}/edit`"
+              class="dropdown-item"
             >
               <i class="fas fa-pen mr-1"></i>記事を更新する
             </RouterLink>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item text-danger" data-toggle="modal" :data-target="`#modal-delete-${article.id}`"
+            <a
+              class="dropdown-item text-danger"
+              data-toggle="modal"
+              :data-target="`#modal-delete-${article.id}`"
             >
               <i class="fas fa-trash-alt mr-1"></i>記事を削除する
             </a>
           </div>
         </div>
       </div>
-      <div :id="`modal-delete-${article.id}`" class="modal fade" tabindex="-1" role="dialog">
+      <div
+        :id="`modal-delete-${article.id}`"
+        class="modal fade"
+        tabindex="-1"
+        role="dialog"
+      >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="閉じる"
+              >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form method="POST" action="">
-              <div class="modal-body">
-                を削除します。よろしいですか？
-              </div>
+            <form method="POST">
+              <div class="modal-body">を削除します。よろしいですか？</div>
               <div class="modal-footer justify-content-between">
-                <a class="btn btn-outline-grey" data-dismiss="modal">キャンセル</a>
-                <button  class="btn btn-danger"
-                @click.prevent="destroy(article.id)"
+                <a class="btn btn-outline-grey" data-dismiss="modal"
+                  >キャンセル</a
                 >
-                    削除する</button>
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  @click="destroy(article.id)"
+                >
+                  削除する
+                </button>
               </div>
             </form>
           </div>
         </div>
       </div>
-
-  </div>
-  <div class="card-body pt-0">
-    <h3 class="h4 card-title">
-      <RouterLink :to="`/articles/${article.id}`" class="text-dark" href="">{{ article.title }}
-      </RouterLink>
-    </h3>
-    <div class="card-text">
-      {{ article.body }}
     </div>
+    <div class="card-body pt-0">
+      <h3 class="h4 card-title">
+        <RouterLink :to="`/articles/${article.id}`" class="text-dark" href=""
+          >{{ article.title }}
+        </RouterLink>
+      </h3>
+      <div class="card-text">
+        {{ article.body }}
+      </div>
+    </div>
+    <RouterView />
   </div>
-  <RouterView/>
-</div>
-
-
 </template>

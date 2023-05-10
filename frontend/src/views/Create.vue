@@ -16,9 +16,11 @@ const submit = async (title,body) => {
   .then(async (res)=> {
       await api.post("/api/articles",{title,body})
       .then(res => {
-        if(res.status == 200){
-            router.push('/')
-        }
+        console.log(res);
+        // if(res.status == 200){
+
+        //     // router.push('/')
+        // }
       })
     })
 }

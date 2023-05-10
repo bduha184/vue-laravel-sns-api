@@ -29,6 +29,7 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request, Article $article)
     {
+
         $article->fill($request->all());
         $article->user_id = $request->user()->id;
         $article->save();
@@ -56,22 +57,35 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleRequest $request, Article $article)
+    public function update(ArticleRequest $request,$id)
     {
-        $article->fill($request->all())->save();
-        // $article->user_id = $request->user()->id;
-        // $article->save();
+        $article = Article::find($id);
+       if($article) {
 
-        return response()->json([
-            'message' => 'update successfully'
-        ], Response::HTTP_OK);
+            $article->fill($request->all())->save();
+           return response()->json([
+               'message' => 'update successfully'
+           ], Response::HTTP_OK);
+       }
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Article $article)
+
+    public function destroy($id)
     {
-        //
+        $article = Article::find($id);
+        if($article){
+            $article->delete();
+            return response()->json([
+                'message' => 'update successfully'
+            ], Response::HTTP_OK);
+        }else {
+            return response()->json([
+                'message' => 'Article not found'
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 }
