@@ -61,3 +61,17 @@ php artisan breeze:install
 npm run dev
 npm install
 exit
+cd backcend
+cd backend
+php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed
+exit
+cd backend
+php artisan migrate
+eixt
+exit
+cd backend
+php artisan migrate
+php artisan cache:clear
+php artisan config:cache
+exit

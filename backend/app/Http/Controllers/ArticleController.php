@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreArticleRequest;
-use App\Http\Requests\UpdateArticleRequest;
+use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
+use Illuminate\Http\Response;
 
 class ArticleController extends Controller
 {
@@ -27,9 +27,15 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreArticleRequest $request)
+    public function store(ArticleRequest $request, Article $article)
     {
-        //
+        $article->fill($request->all());
+        $article->user_id = $request->user()->id;
+        $article->save();
+
+        return response()->json([
+            'message' => 'created successfully'
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -45,15 +51,20 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(ArticleRequest $request, Article $article)
     {
-        //
+        $article->fill($request->all())->save();
+        // $article->user_id = $request->user()->id;
+        // $article->save();
+
+        return response()->json([
+            'message' => 'update successfully'
+        ], Response::HTTP_OK);
     }
 
     /**

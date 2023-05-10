@@ -3,6 +3,11 @@ import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import router from "../js/router";
 import axios from "axios";
+import { useAuthStore } from "../stores/auth";
+
+const auth = useAuthStore();
+
+
 
 const user = ref({});
 
@@ -17,6 +22,7 @@ const register =  async (name, email, password) => {
       await api.post("/api/register",{name,email,password})
         .then(res=>{
           if(res.status == 200){
+            auth.setUser(true);
             router.push('/')
           }
         })
