@@ -15,13 +15,12 @@ const api = axios.create({
 });
 const destroy = async (id) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api.delete(`/api/articles/${id}`)
-    .then((res) => {
-        if(res.status==200) {
-            router.push('/');
-        }
+    await api.delete(`/api/articles/${id}`).then((res) => {
+      if (res.status == 200) {
+        router.push("/");
+      }
     });
-    });
+  });
 };
 </script>
 
@@ -31,11 +30,12 @@ const destroy = async (id) => {
       <i class="fas fa-user-circle fa-3x mr-1"></i>
       <div>
         {{ article.user.name }}
-        <!-- <div class="font-weight-bold">{{ article.user.name }}</div> -->
         <div class="font-weight-lighter">{{ getDays(article.created_at) }}</div>
       </div>
 
-      <div class="ml-auto card-text" v-if="auth.isLoggedIn">
+      <div class="ml-auto card-text"
+      v-if="auth.isLoggedIn === article.user.email"
+      >
         <div class="dropdown">
           <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-ellipsis-v"></i>

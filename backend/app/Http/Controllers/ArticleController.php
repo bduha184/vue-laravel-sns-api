@@ -29,9 +29,9 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request, Article $article)
     {
-
         $article->fill($request->all());
-        $article->user_id = $request->user()->id;
+        $article->user_id = 13;
+        // $article->user_id = $request->user()->id;
         $article->save();
 
         return response()->json([
@@ -57,7 +57,7 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ArticleRequest $request,$id)
+    public function update(ArticleRequest $request, $id)
     {
         $article = Article::find($id);
        if($article) {

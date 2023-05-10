@@ -18,7 +18,7 @@ const login = async (email,password) => {
     await api.post("/api/login",{email,password})
     .then(res=>{
       if(res.status == 200) {
-      auth.setUser(true);
+      auth.setUser(email);
         // console.log(res.status);
         router.push('/')
 
