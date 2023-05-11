@@ -24,8 +24,6 @@ const logout = async () => {
         })
     })
 }
-
-
 </script>
 <template>
   <nav class="navbar navbar-expand navbar-dark blue-gradient">
@@ -61,7 +59,6 @@ const logout = async () => {
         <div
           class="dropdown-menu dropdown-menu-right dropdown-primary"
           aria-labelledby="navbarDropdownMenuLink"
-
         >
           <RouterLink
             class="dropdown-item"

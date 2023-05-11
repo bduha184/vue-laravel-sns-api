@@ -6,6 +6,7 @@ import Create from '../views/Create.vue'
 import Edit from '../views/Edit.vue'
 import Login from '../views/Login.vue'
 import User from '../views/User.vue'
+import Email from '../views/Email.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,10 @@ const router = createRouter({
     {
       path: '/create',
       component: Create,
+    },
+    {
+      path: '/email',
+      component: Email,
     },
     {
       path: '/users/:userName',

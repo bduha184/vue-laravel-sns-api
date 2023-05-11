@@ -63,6 +63,14 @@ const login = async (email,password) => {
                   />
                 </div>
                 <input type="hidden" name="remember" id="remember" value="on" />
+                <div class="text-left">
+                  <RouterLink
+                  class="card-text"
+                  to="/email"
+                  >
+                  パスワードを忘れた方
+                </RouterLink>
+                </div>
                 <button
                   class="btn btn-block blue-gradient mt-2 mb-2" type="button"
                   @click="login(email, password)"
