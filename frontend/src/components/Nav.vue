@@ -2,9 +2,7 @@
 import { RouterLink } from 'vue-router'
 import axios from 'axios';
 import router from '../js/router';
-import { computed } from 'vue';
 import { useAuthStore } from '../stores/auth';
-
 const auth = useAuthStore();
 
 const logout = async () => {
@@ -27,9 +25,6 @@ const logout = async () => {
     })
 }
 
-// const isLoggedIn = computed(()=> {
-//   return
-// })
 
 </script>
 <template>
@@ -68,13 +63,12 @@ const logout = async () => {
           aria-labelledby="navbarDropdownMenuLink"
 
         >
-          <button
+          <RouterLink
             class="dropdown-item"
-            type="button"
-            onclick="location.href=''"
+            :to="`/users/${auth.isLoggedIn}`"
           >
             マイページ
-          </button>
+          </RouterLink>
           <div class="dropdown-divider"></div>
           <button form="logout-button" class="dropdown-item"
           type="button"

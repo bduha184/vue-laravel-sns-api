@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +30,5 @@ Route::get('/articles',[ArticleController::class,'index']);
 Route::post('/articles',[ArticleController::class,'store']);
 Route::put('/articles/{id}',[ArticleController::class,'update']);
 Route::delete('/articles/{id}',[ArticleController::class,'destroy']);
+
+// Route::get('/users/{name}',[UserController::class,'show']);

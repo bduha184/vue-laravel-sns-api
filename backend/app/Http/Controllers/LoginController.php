@@ -26,7 +26,7 @@ class LoginController extends Controller
             $user->tokens()->delete();
             // $token = $user->createToken("login:user{$user->id}")->plainTextToken;
 
-            return response()->json(Response::HTTP_OK);
+            return $user;
         }
 
         return response()->json('User Not Found.', Response::HTTP_INTERNAL_SERVER_ERROR);

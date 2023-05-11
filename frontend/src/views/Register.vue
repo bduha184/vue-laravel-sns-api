@@ -7,8 +7,6 @@ import { useAuthStore } from "../stores/auth";
 
 const auth = useAuthStore();
 
-
-
 const user = ref({});
 
 const register =  async (name, email, password) => {
@@ -22,7 +20,7 @@ const register =  async (name, email, password) => {
       await api.post("/api/register",{name,email,password})
         .then(res=>{
           if(res.status == 200){
-            auth.setUser(true);
+            auth.setUser(name);
             router.push('/')
           }
         })

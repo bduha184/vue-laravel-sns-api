@@ -27,14 +27,30 @@ const destroy = async (id) => {
 <template>
   <div class="card mt-3">
     <div class="card-body d-flex flex-row">
+      <RouterLink
+      class="text-dark"
+      :to="{
+        name:'user',
+        params:{userName:article.user.name}
+      }"
+      >
       <i class="fas fa-user-circle fa-3x mr-1"></i>
-      <div>
-        {{ article.user.name }}
+    </RouterLink>
+    <div>
+      <RouterLink
+      class="text-dark"
+      :to="{
+        name:'user',
+        params:{userName:article.user.name}
+      }"
+        >
+          {{ article.user.name }}
+        </RouterLink>
         <div class="font-weight-lighter">{{ getDays(article.created_at) }}</div>
       </div>
 
       <div class="ml-auto card-text"
-      v-if="auth.isLoggedIn === article.user.email"
+      v-if="auth.isLoggedIn === article.user.name"
       >
         <div class="dropdown">
           <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

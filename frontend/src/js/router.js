@@ -5,6 +5,7 @@ import Register from '../views/Register.vue'
 import Create from '../views/Create.vue'
 import Edit from '../views/Edit.vue'
 import Login from '../views/Login.vue'
+import User from '../views/User.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,12 @@ const router = createRouter({
     {
       path: '/create',
       component: Create,
+    },
+    {
+      path: '/users/:userName',
+      component: User,
+      name:'user',
+      props:true,
     },
     {
       path: '/articles/:articleId/edit',
