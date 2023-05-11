@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -29,11 +30,10 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request, Article $article)
     {
-        $article->fill($request->all());
-        $article->user_id = 13;
-        // $article->user_id = $request->user()->id;
-        $article->save();
 
+        $article->fill($request->all());
+        $article->user_id = Auth::id();
+        $article->save();
         return response()->json([
             'message' => 'created successfully'
         ], Response::HTTP_CREATED);
