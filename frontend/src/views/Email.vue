@@ -1,5 +1,29 @@
 <script setup>
 import { ref } from "vue";
+import axios from 'axios';
+import router from "../js/router";
+
+const data = ref({});
+
+const sendPasswordController = async (email) => {
+  const api = axios.create({
+    baseURL:"http://localhost:8000",
+    withCredentials:true,
+  })
+  await api.get("/sanctum/csrf-cookie")
+    .then(async (res) => {
+      await api.post("/forgot-password",email)
+      .then(res=>{
+        console.log(res);
+        if(res.status == 200) {
+          // router.push('/')
+          }
+        })
+        // .catch(error=>{
+        //   console.log(error);
+        // })
+    })
+}
 
 </script>
 
@@ -19,9 +43,17 @@ import { ref } from "vue";
               <form method="POST">
                 <div class="md-form">
                   <label for="email">メールアドレス</label>
-                  <input class="form-control" type="text" id="email" name="email" required>
+                  <input class="form-control" type="text" id="email" name="email" required
+                  v-model="data.email"
+                  >
                 </div>
-                <button class="btn btn-block blue-gradient mt-2 mb-2" type="submit">メール送信</button>
+                <button
+                class="btn btn-block blue-gradient mt-2 mb-2"
+                type="button"
+                @click="sendPasswordController(data.email)"
+                >
+                メール送信
+              </button>
               </form>
             </div>
           </div>

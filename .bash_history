@@ -75,3 +75,8 @@ php artisan migrate
 php artisan cache:clear
 php artisan config:cache
 exit
+cd backend
+php artisan make:controller UserController
+php artisan route:list
+php artisan route:list
+exit
