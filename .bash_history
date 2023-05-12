@@ -80,3 +80,6 @@ php artisan make:controller UserController
 php artisan route:list
 php artisan route:list
 exit
+cd backend
+php artisan route:list
+exit

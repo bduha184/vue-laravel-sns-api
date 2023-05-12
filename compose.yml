@@ -64,8 +64,8 @@ services:
   mailpit:
     image: 'axllent/mailpit:latest'
     ports:
-        - '${FORWARD_MAILPIT_PORT:-1020}:1020'
-        - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8020}:8020'
+        - '${FORWARD_MAILPIT_PORT}:1025'
+        - '${FORWARD_MAILPIT_DASHBOARD_PORT}:8025'
 
   frontend:
     container_name: frontend

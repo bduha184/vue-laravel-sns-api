@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 import { getDays } from "../js/common";
 import router from "../js/router";
 import { useAuthStore } from "../stores/auth";
+import ArticleLike from "./ArticleLike.vue";
 const auth = useAuthStore();
 
 defineProps({
@@ -121,6 +122,13 @@ const destroy = async (id) => {
         {{ article.body }}
       </div>
     </div>
+    <div class="card-body pt-0 pb-2 pl-3">
+    <div class="card-text">
+      <ArticleLike
+        :initial-is-liked-by="auth.isLoggedIn !== ''"
+      />
+    </div>
+  </div>
     <RouterView />
   </div>
 </template>
