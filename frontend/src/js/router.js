@@ -58,7 +58,7 @@ const router = createRouter({
 
 router.beforeEach(to=> {
   const auth = useAuthStore();
-  if(auth.isLoggedIn.status === false){
+  if(!auth.isLoggedIn.status){
     if(to.name == 'create' || to.name == 'edit'){
       return {name:'index'}
     }

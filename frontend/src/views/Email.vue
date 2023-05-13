@@ -13,7 +13,6 @@ const sendPasswordResetController = async (email) => {
       // if(res.status == 200) {
       // auth.setUser(res.data.name);
       //   router.push('/')
-
       // }
     });
   });

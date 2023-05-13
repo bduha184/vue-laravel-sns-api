@@ -5,8 +5,6 @@ import router from '../js/router';
 import { useAuthStore } from '../js/auth';
 const auth = useAuthStore();
 
-console.log(auth.isLoggedIn.status);
-
 const logout = async () => {
   const api = axios.create({
     baseURL:"http://localhost:8000",

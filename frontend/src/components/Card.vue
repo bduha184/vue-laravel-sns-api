@@ -11,12 +11,12 @@ const auth = useAuthStore();
 const props = defineProps({
   article: Object,
 });
+console.log(auth.isLoggedIn.status)
 
 const api = axios.create({
   baseURL: "http://localhost:8000",
   withCredentials: true,
 });
-
 const destroy = async (id) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.delete(`/api/articles/${id}`).then((res) => {
@@ -26,53 +26,40 @@ const destroy = async (id) => {
     });
   });
 };
-
-// const getIsLikesBy = async ()=> {
-//   await api.get('/sanctum/csrf-cookie').then(async (res) => {
-//     await api.get(`/api/articles/${props.article.id}`)
-//       .then(res=> {
-//         console.log(res.data);
-//       })
-//   })
-// }
-
-// const getCountLikes = () => {
-
-// }
-
-// onMounted(()=> {
-//   getIsLikesBy();
-//   getCountLikes();
-// })
-
 </script>
 
 <template>
   <div class="card mt-3">
     <div class="card-body d-flex flex-row">
       <RouterLink
-      class="text-dark"
-      :to="{
-        name:'user',
-        params:{userName:article.user.name}
-      }"
+        class="text-dark"
+        :to="{
+          name: 'user',
+          params: { userName: props.article.user.name },
+        }"
       >
-      <i class="fas fa-user-circle fa-3x mr-1"></i>
-    </RouterLink>
-    <div>
-      <RouterLink
-      class="text-dark"
-      :to="{
-        name:'user',
-        params:{userName:article.user.name}
-      }"
+        <i class="fas fa-user-circle fa-3x mr-1"></i>
+      </RouterLink>
+      <div>
+        <RouterLink
+          class="text-dark"
+          :to="{
+            name: 'user',
+            params: { userName: props.article.user.name },
+          }"
         >
-          {{ article.user.name }}
+          {{ props.article.user.name }}
         </RouterLink>
-        <div class="font-weight-lighter">{{ getDays(article.created_at) }}</div>
+        <div class="font-weight-lighter">
+          {{ getDays(props.article.created_at) }}
+        </div>
       </div>
-      <div class="ml-auto card-text"
-      v-if="auth.isLoggedIn.status && (auth.isLoggedIn.name === article.user.name)"
+      <div
+        class="ml-auto card-text"
+        v-if="
+          auth.isLoggedIn.status &&
+          auth.isLoggedIn.name === props.article.user.name
+        "
       >
         <div class="dropdown">
           <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -123,7 +110,7 @@ const destroy = async (id) => {
                 <button
                   class="btn btn-danger"
                   type="button"
-                  @click="destroy(article.id)"
+                  @click="destroy(props.article.id)"
                 >
                   削除する
                 </button>
@@ -135,20 +122,22 @@ const destroy = async (id) => {
     </div>
     <div class="card-body pt-0">
       <h3 class="h4 card-title">
-        <RouterLink :to="`/articles/${props.article.id}`" class="text-dark" href=""
-          >{{ article.title }}
+        <RouterLink
+          :to="`/articles/${props.article.id}`"
+          class="text-dark"
+          href=""
+          >{{ props.article.title }}
         </RouterLink>
       </h3>
       <div class="card-text">
-        {{ article.body }}
+        {{ props.article.body }}
       </div>
     </div>
     <div class="card-body pt-0 pb-2 pl-3">
-    <div class="card-text">
-      <ArticleLike
-      />
+      <div class="card-text">
+        <ArticleLike :article="props.article" />
+      </div>
     </div>
-  </div>
     <RouterView />
   </div>
 </template>

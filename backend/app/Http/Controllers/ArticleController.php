@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,6 +35,8 @@ class ArticleController extends Controller
         $article->fill($request->all());
         $article->user_id = Auth::id();
         $article->save();
+
+
         return response()->json([
             'message' => 'created successfully'
         ], Response::HTTP_CREATED);
@@ -44,7 +47,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article ,$id)
     {
-        return $article->where('id',$id)->with('user')->first();
+        return $article->where('id',$id)->with('user')->with('likes')->first();
     }
 
     /**
@@ -87,5 +90,12 @@ class ArticleController extends Controller
                 'message' => 'Article not found'
             ], Response::HTTP_NOT_FOUND);
         }
+    }
+
+    public function like(Request $request,$id){
+
+        $article = Article::find($id)->likes();
+        $article->detach($request->user()->id);
+        $article->attach($request->user()->id);
     }
 }

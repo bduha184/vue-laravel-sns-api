@@ -2,7 +2,6 @@
 import { reactive,onMounted } from 'vue';
 import Card from '../components/Card.vue'
 import axios from 'axios';
-
 const props = defineProps({
   articleId:Number
 })
@@ -14,6 +13,23 @@ const article = reactive({
   created_at:Number,
   user:Object
 })
+
+// const api = axios.create({
+//   baseURL: "http://localhost:8000",
+//   withCredentials: true,
+// });
+
+// const getCountLikes = async ()=> {
+//   await api.get('/sanctum/csrf-cookie').then(async (res) => {
+//     await api.get(`/api/articles/${props.articleId}`)
+//       .then(res=> {
+//         console.log(res);
+//       })
+//   })
+// }
+// onMounted(()=>{
+//   getCountLikes();
+// })
 
 const getArticle =  async () => {
 
