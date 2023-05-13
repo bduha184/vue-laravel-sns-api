@@ -1,11 +1,41 @@
 <script setup>
+import axios from 'axios'
+import { onMounted } from 'vue'
 
-defineProps({
+const props = defineProps({
   initialIsLikedBy:{
     type:Boolean,
     default:false
-  }
+  },
 })
+const api = axios.create({
+  baseURL:"http://localhost:8000",
+  withCredentials:true,
+})
+
+// const getCountLikes = async ()=> {
+//   await api.get('/sanctum/csrf-cookie').then(async (res) => {
+//     await api.get(`/api/articles/${props.articleId}`)
+//       .then(res=> {
+//         console.log(res);
+//       })
+//   })
+// }
+
+// onMounted(()=>{
+//   getCountLikes();
+// })
+
+
+// public function isLikedBy(?User $user) {
+//         return $user
+//         ? (bool)$this->likes->where('id',$user->id)->count()
+//         : false;
+//     }
+
+//     public function getCountLikesAttribute():int {
+//         return $this->likes->count();
+//     }
 
 </script>
   <template>
@@ -18,6 +48,6 @@ defineProps({
       :class="{'red-text':initialIsLikedBy}"
       />
     </button>
-    10
+
   </div>
 </template>

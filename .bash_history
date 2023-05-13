@@ -83,3 +83,8 @@ exit
 cd backend
 php artisan route:list
 exit
+cd backend
+php artisan make:migration create_likes_table
+php artisan migrate
+mysql -u myappuser -p
+exit

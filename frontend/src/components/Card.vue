@@ -1,5 +1,6 @@
 <script setup>
 import axios from "axios";
+import { onMounted } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { getDays } from "../js/common";
 import router from "../js/router";
@@ -7,13 +8,15 @@ import { useAuthStore } from "../stores/auth";
 import ArticleLike from "./ArticleLike.vue";
 const auth = useAuthStore();
 
-defineProps({
+const props = defineProps({
   article: Object,
 });
+
 const api = axios.create({
   baseURL: "http://localhost:8000",
   withCredentials: true,
 });
+
 const destroy = async (id) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.delete(`/api/articles/${id}`).then((res) => {
@@ -23,6 +26,25 @@ const destroy = async (id) => {
     });
   });
 };
+
+// const getIsLikesBy = async ()=> {
+//   await api.get('/sanctum/csrf-cookie').then(async (res) => {
+//     await api.get(`/api/articles/${props.article.id}`)
+//       .then(res=> {
+//         console.log(res.data);
+//       })
+//   })
+// }
+
+// const getCountLikes = () => {
+
+// }
+
+// onMounted(()=> {
+//   getIsLikesBy();
+//   getCountLikes();
+// })
+
 </script>
 
 <template>
@@ -49,7 +71,6 @@ const destroy = async (id) => {
         </RouterLink>
         <div class="font-weight-lighter">{{ getDays(article.created_at) }}</div>
       </div>
-
       <div class="ml-auto card-text"
       v-if="auth.isLoggedIn === article.user.name"
       >
@@ -59,7 +80,7 @@ const destroy = async (id) => {
           </a>
           <div class="dropdown-menu dropdown-menu-right">
             <RouterLink
-              :to="`/articles/${article.id}/edit`"
+              :to="`/articles/${props.article.id}/edit`"
               class="dropdown-item"
             >
               <i class="fas fa-pen mr-1"></i>記事を更新する
@@ -68,7 +89,7 @@ const destroy = async (id) => {
             <a
               class="dropdown-item text-danger"
               data-toggle="modal"
-              :data-target="`#modal-delete-${article.id}`"
+              :data-target="`#modal-delete-${props.article.id}`"
             >
               <i class="fas fa-trash-alt mr-1"></i>記事を削除する
             </a>
@@ -76,7 +97,7 @@ const destroy = async (id) => {
         </div>
       </div>
       <div
-        :id="`modal-delete-${article.id}`"
+        :id="`modal-delete-${props.article.id}`"
         class="modal fade"
         tabindex="-1"
         role="dialog"
@@ -114,7 +135,7 @@ const destroy = async (id) => {
     </div>
     <div class="card-body pt-0">
       <h3 class="h4 card-title">
-        <RouterLink :to="`/articles/${article.id}`" class="text-dark" href=""
+        <RouterLink :to="`/articles/${props.article.id}`" class="text-dark" href=""
           >{{ article.title }}
         </RouterLink>
       </h3>
@@ -125,7 +146,6 @@ const destroy = async (id) => {
     <div class="card-body pt-0 pb-2 pl-3">
     <div class="card-text">
       <ArticleLike
-        :initial-is-liked-by="auth.isLoggedIn !== ''"
       />
     </div>
   </div>

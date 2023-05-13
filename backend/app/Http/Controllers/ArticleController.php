@@ -42,9 +42,9 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article)
+    public function show(Article $article ,$id)
     {
-        //
+        return $article->where('id',$id)->with('user')->first();
     }
 
     /**
