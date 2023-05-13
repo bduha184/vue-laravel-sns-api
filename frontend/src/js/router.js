@@ -7,12 +7,15 @@ import Edit from '../views/Edit.vue'
 import Login from '../views/Login.vue'
 import User from '../views/User.vue'
 import Email from '../views/Email.vue'
+import { useAuthStore } from './auth';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
+      name:'index',
       component: Index
     },
     {
@@ -30,6 +33,7 @@ const router = createRouter({
     },
     {
       path: '/create',
+      name:'create',
       component: Create,
     },
     {
@@ -45,10 +49,20 @@ const router = createRouter({
     {
       path: '/articles/:articleId/edit',
       component: Edit,
+      name:'edit',
       props:true
     },
 
   ]
+})
+
+router.beforeEach(to=> {
+  const auth = useAuthStore();
+  if(auth.isLoggedIn.status === false){
+    if(to.name == 'create' || to.name == 'edit'){
+      return {name:'index'}
+    }
+  }
 })
 
 export default router

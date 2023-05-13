@@ -1,8 +1,10 @@
 <script setup>
 import Form from "../components/Form.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import router from "../js/router";
+import { useAuthStore } from "../js/auth";
+const auth = useAuthStore();
 
 const articleData = ref([]);
 
@@ -20,6 +22,15 @@ const submit = async (title, body) => {
     });
   });
 };
+
+// console.log(auth.isLoggdIn)
+// onMounted(() => {
+//   router.beforeEach((to) => {
+//     if (!auth.isLoggdIn && to.name !== "index") {
+//       return { name: "index" };
+//     }
+//   });
+// });
 </script>
 
 <template>

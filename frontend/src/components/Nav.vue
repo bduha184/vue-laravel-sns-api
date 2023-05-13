@@ -2,8 +2,10 @@
 import { RouterLink } from 'vue-router'
 import axios from 'axios';
 import router from '../js/router';
-import { useAuthStore } from '../stores/auth';
+import { useAuthStore } from '../js/auth';
 const auth = useAuthStore();
+
+console.log(auth.isLoggedIn.status);
 
 const logout = async () => {
   const api = axios.create({
@@ -31,21 +33,21 @@ const logout = async () => {
 
     <ul class="navbar-nav ml-auto">
 
-      <li class="nav-item" v-if="!auth.isLoggedIn">
+      <li class="nav-item" v-if="!auth.isLoggedIn.status">
         <RouterLink to="/register" class="nav-link">ユーザー登録</RouterLink>
       </li>
 
-      <li class="nav-item" v-if="!auth.isLoggedIn">
+      <li class="nav-item" v-if="!auth.isLoggedIn.status">
         <RouterLink to="/login" class="nav-link" href="">ログイン</RouterLink>
       </li>
 
       <li class="nav-item"
-      v-if="auth.isLoggedIn"
+      v-if="auth.isLoggedIn.status"
       >
         <RouterLink to="/create" class="nav-link" href=""><i class="fas fa-pen mr-1"></i>投稿する</RouterLink>
       </li>
       <li class="nav-item dropdown"
-      v-if="auth.isLoggedIn"
+      v-if="auth.isLoggedIn.status"
       >
         <a
           class="nav-link dropdown-toggle"
@@ -62,16 +64,15 @@ const logout = async () => {
         >
           <RouterLink
             class="dropdown-item"
-            :to="`/users/${auth.isLoggedIn}`"
+            :to="`/users/${auth.isLoggedIn.name}`"
           >
-            マイページ
+          マイページ
           </RouterLink>
           <div class="dropdown-divider"></div>
           <button form="logout-button" class="dropdown-item"
-          type="button"
-            @click="logout"
+            @click.prevent="logout"
           >
-            ログアウト
+          ログアウト
           </button>
         </div>
       </li>
@@ -79,3 +80,19 @@ const logout = async () => {
     </ul>
   </nav>
 </template>
+
+<style scoped>
+.navbar .dropdown-menu a{
+  display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+</style>

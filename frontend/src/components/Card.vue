@@ -4,7 +4,7 @@ import { onMounted } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { getDays } from "../js/common";
 import router from "../js/router";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../js/auth";
 import ArticleLike from "./ArticleLike.vue";
 const auth = useAuthStore();
 
@@ -72,7 +72,7 @@ const destroy = async (id) => {
         <div class="font-weight-lighter">{{ getDays(article.created_at) }}</div>
       </div>
       <div class="ml-auto card-text"
-      v-if="auth.isLoggedIn === article.user.name"
+      v-if="auth.isLoggedIn.status && (auth.isLoggedIn.name === article.user.name)"
       >
         <div class="dropdown">
           <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

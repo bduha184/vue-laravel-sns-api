@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import router from "../js/router";
 import axios from "axios";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../js/auth";
 
 const auth = useAuthStore();
 
