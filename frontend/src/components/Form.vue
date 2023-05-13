@@ -1,4 +1,5 @@
 <script setup>
+import ArticleTagsInput from './ArticleTagsInput.vue';
 const props = defineProps({
   articleData:Object,
   // defaultArticleData:Object
@@ -13,6 +14,9 @@ const props = defineProps({
     <input type="text" name="title" class="form-control" required
     v-model="articleData.title"
     >
+  </div>
+  <div class="form-group">
+    <ArticleTagsInput/>
   </div>
   <div class="form-group">
     <label></label>
