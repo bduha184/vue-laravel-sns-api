@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { onMounted } from "vue";
+import {  onMounted, ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { getDays } from "../js/common";
 import router from "../js/router";
@@ -11,7 +11,7 @@ const auth = useAuthStore();
 const props = defineProps({
   article: Object,
 });
-console.log(auth.isLoggedIn.status)
+// console.log(auth.isLoggedIn.status)
 
 const api = axios.create({
   baseURL: "http://localhost:8000",
@@ -26,6 +26,7 @@ const destroy = async (id) => {
     });
   });
 };
+
 </script>
 
 <template>
@@ -138,6 +139,16 @@ const destroy = async (id) => {
         <ArticleLike :article="props.article" />
       </div>
     </div>
+    <div class="card-body pt-0 pb-4 pl-3"
+    v-for="tag in props.article.tags"
+    :key="tag.id"
+    >
+        <div class="card-text line-height">
+          <a href="" class="border p-1 mr-1 mt-1 text-muted">
+            #{{ tag.name }}
+          </a>
+        </div>
+      </div>
     <RouterView />
   </div>
 </template>

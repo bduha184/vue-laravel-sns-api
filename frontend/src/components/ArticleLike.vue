@@ -20,16 +20,15 @@ const initialIsLikedBy = ref(false);
 const isLikedBy = ref(false);
 
 const switchIsLikedBy = async () => {
-await api.get("/sanctum/csrf-cookie").then(async (res) => {
-  await api.put(`/api/articles/${props.article.id}/like`)
-    .then(res=> {
-      console.log(res.data);
-    })
-});
   if (isLoggedIn && auth.isLoggedIn.userId !== props.article.user.id) {
-    if(!isLikedBy.value){
+    await api.get("/sanctum/csrf-cookie").then(async (res) => {
+      await api.put(`/api/articles/${props.article.id}/like`).then((res) => {
+        console.log(res.data);
+      });
+    });
+    if (!isLikedBy.value) {
       initialIsLikedBy.value = true;
-    }else {
+    } else {
       initialIsLikedBy.value = false;
     }
     isLikedBy.value = true;
@@ -60,10 +59,17 @@ onMounted(() => {
 </script>
 <template>
   <div>
-    <button type="button" class="btn m-0 p-1 shadow-none" @click="switchIsLikedBy">
+    <button
+      type="button"
+      class="btn m-0 p-1 shadow-none"
+      @click="switchIsLikedBy"
+    >
       <i
         class="fas fa-heart mr-1"
-        :class="{ 'red-text ': isLikedBy,'animated heartBeat fast':initialIsLikedBy }"
+        :class="{
+          'red-text ': isLikedBy,
+          'animated heartBeat fast': initialIsLikedBy,
+        }"
       />
     </button>
     <span>

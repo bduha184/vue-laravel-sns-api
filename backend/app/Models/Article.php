@@ -23,6 +23,9 @@ class Article extends Model
     public function likes():BelongsToMany{
         return $this->belongsToMany(User::class,'likes')->withTimestamps();
     }
+    public function tags():BelongsToMany{
+        return $this->belongsToMany(Tag::class)->withTimestamps();
+    }
 
 
     // public function isLikedBy(?User $user):bool{

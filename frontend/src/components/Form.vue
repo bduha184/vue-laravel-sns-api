@@ -1,9 +1,17 @@
 <script setup>
+import { computed, reactive, ref } from 'vue';
 import ArticleTagsInput from './ArticleTagsInput.vue';
 const props = defineProps({
   articleData:Object,
-  // defaultArticleData:Object
 });
+
+// const articleData = ref({});
+
+const emitTags = (e) => {
+  console.log(e);
+  // articleData.tags = e;
+}
+
 
 </script>
 
@@ -16,7 +24,9 @@ const props = defineProps({
     >
   </div>
   <div class="form-group">
-    <ArticleTagsInput/>
+    <ArticleTagsInput
+    @inputTags="emitTags"
+    />
   </div>
   <div class="form-group">
     <label></label>

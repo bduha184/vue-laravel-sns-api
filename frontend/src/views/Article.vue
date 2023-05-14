@@ -11,7 +11,8 @@ const article = reactive({
   title:String,
   body:String,
   created_at:Number,
-  user:Object
+  user:Object,
+  tags:Object
 })
 
 // const api = axios.create({
@@ -41,11 +42,13 @@ await api.get("/sanctum/csrf-cookie")
   .then(async (res) => {
     await api.get(`/api/articles/${props.articleId}`)
       .then(res=>{
+        console.log(res.data);
         article.id = res.data.id;
         article.title = res.data.title;
         article.body = res.data.body;
         article.created_at = res.data.created_at;
         article.user = res.data.user;
+        article.tags = res.data.tags;
       })
       .catch(error=>{
         console.log(error);
