@@ -8,7 +8,7 @@ export const useFollowStore = defineStore({
   }),
   persist:true,
   getters:{
-    isFollowedBy:(state)=>(state.status)
+    isFollowedBy:(state)=>state.status
   },
   actions:{
     setFollowStatus(status){

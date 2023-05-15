@@ -48,11 +48,9 @@ const getFollowersCount = async () => {
     })
 }
 
-const changeFollowStatus = () => {
-
-}
 
 onMounted(()=> {
+  
   getFollowersCount();
   getFolloweesCount();
 })

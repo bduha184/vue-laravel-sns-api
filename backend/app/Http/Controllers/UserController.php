@@ -35,4 +35,25 @@ class UserController extends Controller
             'followees' => $followees
         ];
     }
+
+    public function follow(Request $request,string $name){
+        $user = User::where('name',$name)->first();
+
+        // if($user->id === $request->user()->id){
+        //     return abort('404', 'Cannot follow yourself.');
+        // }
+
+        $request->user()->followees()->detach($user);
+        $request->user()->followees()->attach($user);
+
+        return ['name'=>$name];
+    }
+
+    public function unfollow(Request $request,string $name){
+        $user = User::where('name',$name)->first();
+
+        $request->user()->followees()->detach($user);
+
+        return ['name'=>$name];
+    }
 }
