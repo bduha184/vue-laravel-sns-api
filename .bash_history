@@ -88,3 +88,19 @@ php artisan make:migration create_likes_table
 php artisan migrate
 mysql -u myappuser -p
 exit
+cd backendd
+cd backend
+php artisan route:list
+php artisan route:list
+php artisan route:list
+php artisan route:list
+php artisan route:list
+php artisan make:migration create_tags_table
+php artisan make:migration create_article_tag__table
+php artisan make:migration create_article_tag_table
+php artisan migrate
+php artisan make:model Tag
+php artisan migratoion create_follows_table
+php artisan migration create_follows_table
+php artisan migration create_follows_table
+exit

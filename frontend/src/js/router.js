@@ -7,7 +7,7 @@ import Edit from '../views/Edit.vue'
 import Login from '../views/Login.vue'
 import User from '../views/User.vue'
 import Email from '../views/Email.vue'
-import { useAuthStore } from './auth';
+import { useAuthStore } from './store/auth';
 
 
 const router = createRouter({

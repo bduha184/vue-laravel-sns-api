@@ -2,7 +2,7 @@
 import { RouterLink } from 'vue-router'
 import axios from 'axios';
 import router from '../js/router';
-import { useAuthStore } from '../js/auth';
+import { useAuthStore } from '../js/store/auth';
 const auth = useAuthStore();
 
 const logout = async () => {

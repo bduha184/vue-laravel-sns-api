@@ -1,7 +1,7 @@
 <script setup>
 import axios from "axios";
 import { onMounted, ref } from "vue";
-import { useAuthStore } from "../js/auth";
+import { useAuthStore } from "../js/store/auth";
 const props = defineProps({
   article: Object,
 });

@@ -1,6 +1,6 @@
 <script setup>
 import Form from "../components/Form.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 import axios from "axios";
 import router from "../js/router";
 
@@ -19,7 +19,8 @@ const submit = async (title, body,tags) => {
       // }
     });
   });
-};
+}
+
 
 </script>
 

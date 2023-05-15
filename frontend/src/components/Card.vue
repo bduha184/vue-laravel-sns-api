@@ -4,7 +4,7 @@ import {  onMounted, ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { getDays } from "../js/common";
 import router from "../js/router";
-import { useAuthStore } from "../js/auth";
+import { useAuthStore } from "../js/store/auth";
 import ArticleLike from "./ArticleLike.vue";
 const auth = useAuthStore();
 

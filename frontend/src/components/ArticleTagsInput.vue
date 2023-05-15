@@ -4,6 +4,10 @@ import { computed, ref } from "vue";
 
 const tags = ref([]);
 
+const props = defineProps({
+  inputTags:Object,
+})
+
 // const autocompleteItems = reactive([
 //   {
 //     text: "Spain",
@@ -26,11 +30,11 @@ const tagsJson = computed(() => {
   return JSON.stringify(tags)
 });
 
-const emit = defineEmits(['inputTags'])
+// const emit = defineEmits(['inputTags'])
 
-const inputTags = () => {
-  emit('inputTags',tags.value);
-}
+// const inputTags = () => {
+//   emit('inputTags',tags.value);
+// }
 
 </script>
 
@@ -43,7 +47,7 @@ const inputTags = () => {
       >
       <vue3-tags-input
       :tags="tags"
-      @input="inputTags"
+      v-model="inputTags.tags"
       placeholder="タグを5個まで入力できます"
       @on-tags-changed="newTags => tags = newTags"
     />

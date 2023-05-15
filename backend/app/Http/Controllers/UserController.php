@@ -15,4 +15,24 @@ class UserController extends Controller
             'message'=>'User select successfully'
         ],Response::HTTP_OK);
     }
+
+    public function followers(string $name){
+        $user = User::where('name',$name)->first();
+        $followers = $user->followers->sortByDesc('created_at');
+
+        return [
+            'user'=>$user,
+            'followers' => $followers
+        ];
+    }
+
+    public function followees(string $name){
+        $user = User::where('name',$name)->first();
+        $followees = $user->followees->sortByDesc('created_at');
+
+        return [
+            'user'=>$user,
+            'followees' => $followees
+        ];
+    }
 }
