@@ -42,7 +42,6 @@ await api.get("/sanctum/csrf-cookie")
   .then(async (res) => {
     await api.get(`/api/articles/${props.articleId}`)
       .then(res=>{
-        console.log(res.data);
         article.id = res.data.id;
         article.title = res.data.title;
         article.body = res.data.body;

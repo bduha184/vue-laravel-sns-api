@@ -11,7 +11,6 @@ const auth = useAuthStore();
 const props = defineProps({
   article: Object,
 });
-// console.log(auth.isLoggedIn.status)
 
 const api = axios.create({
   baseURL: "http://localhost:8000",
@@ -20,6 +19,7 @@ const api = axios.create({
 const destroy = async (id) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.delete(`/api/articles/${id}`).then((res) => {
+      console.log(res.status)
       if (res.status == 200) {
         router.push("/");
       }
@@ -110,8 +110,7 @@ const destroy = async (id) => {
                 >
                 <button
                   class="btn btn-danger"
-                  type="button"
-                  @click="destroy(props.article.id)"
+                  @click.prevent="destroy(props.article.id)"
                 >
                   削除する
                 </button>

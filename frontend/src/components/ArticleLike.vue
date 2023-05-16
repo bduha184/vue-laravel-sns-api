@@ -1,10 +1,21 @@
 <script setup>
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "../js/store/auth";
+import { useLikesStore } from "../js/store/likes";
+
 const props = defineProps({
   article: Object,
 });
+
+const likes = useLikesStore();
+
+const getLikesCount = computed(()=>{
+  return likes.getLikesCount;
+})
+const getIsLikedBy = computed(()=>{
+  return likes.getIsLikedBy;
+})
 
 const auth = useAuthStore();
 let isLoggedIn = auth.isLoggedIn.status;
@@ -17,7 +28,7 @@ const api = axios.create({
 });
 
 const initialIsLikedBy = ref(false);
-const isLikedBy = ref(false);
+// const isLikedBy = ref(false);
 
 const switchIsLikedBy = async () => {
   if (isLoggedIn && auth.isLoggedIn.userId !== props.article.user.id) {
@@ -37,24 +48,26 @@ const switchIsLikedBy = async () => {
   }
 };
 
-const getCountLikes = async () => {
-  await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api.get(`/api/articles/${props.article.id}`).then((res) => {
-      if (res.data.likes) {
-        const likes = res.data.likes;
-        likes.forEach((like) => {
-          if (auth.isLoggedIn.status && auth.isLoggedIn.userId === like.id) {
-            isLikedBy.value = true;
-          }
-        });
-        countLikes.value = res.data.likes.length;
-      }
-    });
-  });
-};
+// const getCountLikes = async () => {
+//   await api.get("/sanctum/csrf-cookie").then(async (res) => {
+//     await api.get(`/api/articles/${props.article.id}`).then((res) => {
+//       if (res.data.likes) {
+//         const likes = res.data.likes;
+//         likes.forEach((like) => {
+//           if (auth.isLoggedIn.status && auth.isLoggedIn.userId === like.id) {
+//             isLikedBy.value = true;
+//           }
+//         });
+//         countLikes.value = res.data.likes.length;
+//       }
+//     });
+//   });
+// };
+
 
 onMounted(() => {
-  getCountLikes();
+  // getCountLikes();
+  likes.fetchLikesCount(props.article.id);
 });
 </script>
 <template>
@@ -67,13 +80,13 @@ onMounted(() => {
       <i
         class="fas fa-heart mr-1"
         :class="{
-          'red-text ': isLikedBy,
+          'red-text ': getIsLikedBy,
           'animated heartBeat fast': initialIsLikedBy,
         }"
       />
     </button>
     <span>
-      {{ countLikes }}
+      {{ getLikesCount }}
     </span>
   </div>
 </template>

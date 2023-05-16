@@ -1,7 +1,7 @@
 <script setup>
 import axios from "axios";
 import { computed, reactive, ref } from "vue";
-import { useFollowStore } from "../js/store/follow";
+import { useFollowStore } from "../js/store/follows";
 import { useAuthStore } from "../js/store/auth";
 import { useRoute } from "vue-router";
 

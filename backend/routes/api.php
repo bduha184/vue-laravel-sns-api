@@ -22,8 +22,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::get('/user/{name}/followers',[UserController::class,'followers']);
-    Route::get('/user/{name}/followees',[UserController::class,'followees']);
     Route::put('/user/{name}/follow',[UserController::class,'follow']);
     Route::delete('/user/{name}/follow',[UserController::class,'unfollow']);
     Route::post('/articles',[ArticleController::class,'store']);
@@ -40,3 +38,7 @@ Route::post('/logout',[LoginController::class,'logout']);
 
 Route::get('/articles',[ArticleController::class,'index']);
 Route::get('/articles/{id}',[ArticleController::class,'show']);
+
+Route::get('/user/{name}/followers',[UserController::class,'followers']);
+Route::get('/user/{name}/followees',[UserController::class,'followees']);
+Route::get('/user/{name}/likes',[UserController::class,'likes']);

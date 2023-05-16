@@ -1,61 +1,49 @@
 <script setup>
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { onMounted, ref,computed } from "vue";
 import { useRoute } from "vue-router";
 import FollowButton from "../components/FollowButton.vue";
 import { useAuthStore } from "../js/store/auth";
 import Card from "../components/Card.vue";
+import { useArticleStore } from "../js/store/articles";
+import { useFollowStore } from "../js/store/follows";
 
 const auth = useAuthStore();
 const route = useRoute();
-// const props = defineProps({
-//   article: Object,
-// });
 const userName = route.params.userName;
 
-const api = axios.create({
-  baseURL: "http://localhost:8000",
-  withCredentials: true,
-});
-const followers = ref(0);
-const followees = ref(0);
+const articles = useArticleStore();
+const getArticles = computed(()=> {
+  return articles.getArticles;
+})
+const Articles = computed(()=>{
+  return articles.articles
+})
 
-const getFollowersCount = async () => {
-  await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api
-      .get(`/api/user/${route.params.userName}/followers`)
-      .then((res) => {
-        const followerObject = res.data.followers;
-        if (res.status == 200) {
-          followers.value = Object.keys(followerObject).length;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-};
-
-const getFolloweesCount = async () => {
-  await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api
-      .get(`/api/user/${route.params.userName}/followees`)
-      .then((res) => {
-        const followeeObject = res.data.followees;
-        if (res.status == 200) {
-          followees.value = Object.keys(followeeObject).length;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-};
+const follows = useFollowStore();
+const getFollowers = computed(()=> {
+  return follows.getFollowers;
+})
+const getFollowees = computed(()=> {
+  return follows.getFollowees;
+})
 
 onMounted(() => {
-  getFollowersCount();
-  getFolloweesCount();
+  follows.fetchFollowees(userName);
+  follows.fetchFollowers(userName);
+  articles.fetchArticles();
 });
+
+// const showUserArticles = computed(() => {
+
+//     const userArticles =  getArticles.filter(article => {
+//       article.user.name === userName
+//     });
+
+//     return userArticles;
+// })
+
+
 </script>
 
 <template>
@@ -79,24 +67,29 @@ onMounted(() => {
       </div>
       <div class="card-body">
         <div class="card-text">
-          <a href="" class="text-muted"> {{ followees }} フォロー </a>
-          <a href="" class="text-muted"> {{ followers }} フォロワー </a>
+          <a href="" class="text-muted"> {{ follows.followees }} フォロー </a>
+          <a href="" class="text-muted"> {{ follows.followers }} フォロワー </a>
         </div>
       </div>
     </div>
     <ul class="nav nav-tabs nav-justified mt-3">
       <li class="nav-item">
-        <a
+        <button
           class="nav-link text-muted active"
-          href=""
+          @click.prevent="showUserArticles"
         >
           記事
-        </a>
+        </button>
       </li>
       <li class="nav-item">
         <a class="nav-link text-muted" href=""> いいね </a>
       </li>
     </ul>
-<!-- <Card/> -->
+    <div
+    v-for="article in getArticles"
+    :key="article.id"
+    >
+    <Card :article="article"/>
+    </div>
   </div>
 </template>

@@ -1,31 +1,18 @@
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref,onMounted, computed, compile } from 'vue';
 import axios from 'axios';
-
+import { useArticleStore } from '../js/store/articles';
 import Card from '../components/Card.vue'
 
-const articles = ref([])
-
-const getArticles =  async () => {
-
-const api = axios.create({
-  baseURL:"http://localhost:8000",
-  withCredentials:true,
+const articles = useArticleStore();
+const getArticles = computed(()=> {
+  return articles.getArticles;
 })
-await api.get("/sanctum/csrf-cookie")
-  .then(async (res) => {
-    await api.get(`/api/articles/`)
-      .then(res=>{
-        articles.value = res.data;
-      })
-      .catch(error=>{
-        console.log(error);
-      })
-  })
-}
-
+const Articles = computed(()=>{
+  return articles.articles
+})
 onMounted(()=> {
-  getArticles();
+  articles.fetchArticles();
 })
 
 </script>
@@ -33,7 +20,7 @@ onMounted(()=> {
 <template>
  <div class="container">
     <div
-    v-for="article in articles"
+    v-for="article in getArticles"
     :key="article.id"
     >
     <Card :article="article"/>
