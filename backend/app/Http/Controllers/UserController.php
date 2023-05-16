@@ -10,10 +10,14 @@ class UserController extends Controller
 {
 
     public function show($name) {
-        return User::where('name',$name)->first();
-        return response()->json([
-            'message'=>'User select successfully'
-        ],Response::HTTP_OK);
+        $user =  User::where('name',$name)->first();
+
+        $articles = $user->articles->sortByDesc('crated_at');
+
+        return [
+            'user'=>$user,
+            'articles'=>$articles
+        ];
     }
 
     public function followers(string $name){

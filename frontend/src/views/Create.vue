@@ -39,8 +39,8 @@ const submit = async (title, body,tags) => {
                 <button
                   type="button"
                   class="btn blue-gradient btn-block"
-                  @click="submit(articleData.title, articleData.body,articleData.tags)"
-                >
+                  @click="submit('title','body','tags')"
+                  >
                   投稿する
                 </button>
               </form>

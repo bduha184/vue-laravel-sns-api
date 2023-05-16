@@ -37,12 +37,10 @@ class ArticleController extends Controller
         $article->user_id = Auth::id();
         $article->save();
 
-        return $request->tags->get();
 
         // $request->tags->each(function($tagName) use ($article){
-        //     return $tagName;
-        //     // $tag = Tag::firstOrCreate(['name'=>$tagName]);
-        //     // $article->tags()->attach($tag);
+        //     $tag = Tag::firstOrCreate(['name'=>$tagName]);
+        //     $article->tags()->attach($tag);
         // });
 
         // return response()->json([
