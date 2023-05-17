@@ -12,6 +12,8 @@ const props = defineProps({
   article: Object,
 });
 
+// console.log(props.article.user.name);
+
 const api = axios.create({
   baseURL: "http://localhost:8000",
   withCredentials: true,

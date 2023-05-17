@@ -46,7 +46,7 @@ export const useFollowStore = defineStore({
           .then((res) => {
             if (res.status == 200) {
               const followeeObject = res.data.followees;
-              this.followees = Object.keys(followerObject).length;
+              this.followees = Object.keys(followeeObject).length;
             }
           })
           .catch((error) => {

@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { onMounted, ref,computed } from "vue";
+import { onMounted, ref,computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import FollowButton from "../components/FollowButton.vue";
 import { useAuthStore } from "../js/store/auth";
@@ -34,14 +34,32 @@ onMounted(() => {
   articles.fetchArticles();
 });
 
-// const showUserArticles = computed(() => {
+const tabSelect = reactive({
+  userArticles:true,
+  likesArticles:false
+})
 
-//     const userArticles =  getArticles.filter(article => {
-//       article.user.name === userName
-//     });
+const showUserArticles = ()=> {
+  tabSelect.likesArticles = false;
+  tabSelect.userArticles = true;
+}
+const showLikesArticles = ()=> {
+  tabSelect.likesArticles = true;
+  tabSelect.userArticles = false;
+}
 
-//     return userArticles;
-// })
+const  switchArticles = computed(() => {
+
+  if(tabSelect.userArticles){
+    return  getArticles.value.filter(
+        article => article.user.name === userName
+      );
+  }
+  if(tabSelect.likesArticles){
+    return getArticles.value;
+  }
+
+})
 
 
 </script>
@@ -75,18 +93,21 @@ onMounted(() => {
     <ul class="nav nav-tabs nav-justified mt-3">
       <li class="nav-item">
         <button
-          class="nav-link text-muted active"
+          class="nav-link w-100 text-muted"
+          :class="active:{}"
           @click.prevent="showUserArticles"
-        >
+          >
           記事
         </button>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-muted" href=""> いいね </a>
+        <button class="nav-link w-100 text-muted"
+        @click.prevent="showLikesArticles"
+        > いいね </button>
       </li>
     </ul>
     <div
-    v-for="article in getArticles"
+    v-for="article in switchArticles"
     :key="article.id"
     >
     <Card :article="article"/>

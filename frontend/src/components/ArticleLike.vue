@@ -2,20 +2,20 @@
 import axios from "axios";
 import { computed, onMounted, ref } from "vue";
 import { useAuthStore } from "../js/store/auth";
-import { useLikesStore } from "../js/store/likes";
+// import { useLikesStore } from "../js/store/likes";
 
 const props = defineProps({
   article: Object,
 });
 
-const likes = useLikesStore();
+// const likes = useLikesStore();
 
-const getLikesCount = computed(()=>{
-  return likes.getLikesCount;
-})
-const getIsLikedBy = computed(()=>{
-  return likes.getIsLikedBy;
-})
+// const getLikesCount = computed(()=>{
+//   return likes.getLikesCount;
+// })
+// const getIsLikedBy = computed(()=>{
+//   return likes.getIsLikedBy;
+// })
 
 const auth = useAuthStore();
 let isLoggedIn = auth.isLoggedIn.status;
@@ -28,8 +28,8 @@ const api = axios.create({
 });
 
 const initialIsLikedBy = ref(false);
-// const isLikedBy = ref(false);
-
+const isLikedBy = ref(false);
+//
 const switchIsLikedBy = async () => {
   if (isLoggedIn && auth.isLoggedIn.userId !== props.article.user.id) {
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
@@ -48,26 +48,26 @@ const switchIsLikedBy = async () => {
   }
 };
 
-// const getCountLikes = async () => {
-//   await api.get("/sanctum/csrf-cookie").then(async (res) => {
-//     await api.get(`/api/articles/${props.article.id}`).then((res) => {
-//       if (res.data.likes) {
-//         const likes = res.data.likes;
-//         likes.forEach((like) => {
-//           if (auth.isLoggedIn.status && auth.isLoggedIn.userId === like.id) {
-//             isLikedBy.value = true;
-//           }
-//         });
-//         countLikes.value = res.data.likes.length;
-//       }
-//     });
-//   });
-// };
+const getCountLikes = async () => {
+  await api.get("/sanctum/csrf-cookie").then(async (res) => {
+    await api.get(`/api/articles/${props.article.id}`).then((res) => {
+      if (res.data.likes) {
+        const likes = res.data.likes;
+        likes.forEach((like) => {
+          if (auth.isLoggedIn.status && auth.isLoggedIn.userId === like.id) {
+            isLikedBy.value = true;
+          }
+        });
+        countLikes.value = res.data.likes.length;
+      }
+    });
+  });
+};
 
 
 onMounted(() => {
-  // getCountLikes();
-  likes.fetchLikesCount(props.article.id);
+  getCountLikes();
+  // likes.fetchLikesCount(props.article.id);
 });
 </script>
 <template>
