@@ -93,8 +93,7 @@ const  switchArticles = computed(() => {
     <ul class="nav nav-tabs nav-justified mt-3">
       <li class="nav-item">
         <button
-          class="nav-link w-100 text-muted"
-          :class="active:{}"
+          class="nav-link w-100 text-muted active"
           @click.prevent="showUserArticles"
           >
           記事
@@ -114,3 +113,7 @@ const  switchArticles = computed(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+
+</style>

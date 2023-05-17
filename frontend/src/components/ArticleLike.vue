@@ -1,35 +1,20 @@
 <script setup>
 import axios from "axios";
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useAuthStore } from "../js/store/auth";
-// import { useLikesStore } from "../js/store/likes";
-
 const props = defineProps({
   article: Object,
 });
-
-// const likes = useLikesStore();
-
-// const getLikesCount = computed(()=>{
-//   return likes.getLikesCount;
-// })
-// const getIsLikedBy = computed(()=>{
-//   return likes.getIsLikedBy;
-// })
-
 const auth = useAuthStore();
 let isLoggedIn = auth.isLoggedIn.status;
-
 const countLikes = ref(0);
-
 const api = axios.create({
   baseURL: "http://localhost:8000",
   withCredentials: true,
 });
-
 const initialIsLikedBy = ref(false);
 const isLikedBy = ref(false);
-//
+
 const switchIsLikedBy = async () => {
   if (isLoggedIn && auth.isLoggedIn.userId !== props.article.user.id) {
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
@@ -43,10 +28,8 @@ const switchIsLikedBy = async () => {
       initialIsLikedBy.value = false;
     }
     isLikedBy.value = true;
-  } else {
-    isLikedBy.value = false;
   }
-};
+}
 
 const getCountLikes = async () => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
@@ -63,13 +46,10 @@ const getCountLikes = async () => {
     });
   });
 };
-
-
 onMounted(() => {
   getCountLikes();
-  // likes.fetchLikesCount(props.article.id);
 });
-</script>
+  </script>
 <template>
   <div>
     <button
@@ -80,13 +60,13 @@ onMounted(() => {
       <i
         class="fas fa-heart mr-1"
         :class="{
-          'red-text ': getIsLikedBy,
+          'red-text ': isLikedBy,
           'animated heartBeat fast': initialIsLikedBy,
         }"
       />
     </button>
     <span>
-      {{ getLikesCount }}
+      {{ countLikes }}
     </span>
   </div>
 </template>
