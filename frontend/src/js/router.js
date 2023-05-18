@@ -41,7 +41,7 @@ const router = createRouter({
       component: Email,
     },
     {
-      path: '/users/:userName',
+      path: '/users',
       component: User,
       name:'user',
       props:true,

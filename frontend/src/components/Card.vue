@@ -31,6 +31,7 @@ const destroy = async (id) => {
 
 </script>
 
+
 <template>
   <div class="card mt-3">
     <div class="card-body d-flex flex-row">
@@ -38,7 +39,7 @@ const destroy = async (id) => {
         class="text-dark"
         :to="{
           name: 'user',
-          params: { userName: props.article.user.name },
+          query:{userId:props.article.user_id},
         }"
       >
         <i class="fas fa-user-circle fa-3x mr-1"></i>
@@ -48,10 +49,10 @@ const destroy = async (id) => {
           class="text-dark"
           :to="{
             name: 'user',
-            params: { userName: props.article.user.name },
+            query:{userId:props.article.user_id},
           }"
         >
-          {{ props.article.user.name }}
+          {{ props.article.user_id }}
         </RouterLink>
         <div class="font-weight-lighter">
           {{ getDays(props.article.created_at) }}
@@ -61,7 +62,7 @@ const destroy = async (id) => {
         class="ml-auto card-text"
         v-if="
           auth.isLoggedIn.status &&
-          auth.isLoggedIn.name === props.article.user.name
+          auth.isLoggedIn.userId === props.article.user_id
         "
       >
         <div class="dropdown">

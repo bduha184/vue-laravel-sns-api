@@ -20,8 +20,9 @@ class UserController extends Controller
         ];
     }
 
-    public function followers(string $name){
-        $user = User::where('name',$name)->first();
+
+    public function followers($name){
+        $user = User::where('id',$name)->first();
         $followers = $user->followers->sortByDesc('created_at');
 
         return [
@@ -30,8 +31,8 @@ class UserController extends Controller
         ];
     }
 
-    public function followees(string $name){
-        $user = User::where('name',$name)->first();
+    public function followees($name){
+        $user = User::where('id',$name)->first();
         $followees = $user->followees->sortByDesc('created_at');
 
         return [
@@ -61,8 +62,8 @@ class UserController extends Controller
         return ['name'=>$name];
     }
 
-    public function likes(string $name){
-        $user = User::where('name',$name)->first();
+    public function likes($name){
+        $user = User::where('id',$name)->first();
 
         $articles = $user->likes->sortByDesc('created_at');
 

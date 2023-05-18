@@ -16,7 +16,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return Article::latest()->with('user')->with('likes')->get();
+        return Article::latest()->get();
     }
 
     /**
@@ -103,5 +103,13 @@ class ArticleController extends Controller
         $article = Article::find($id)->likes();
         $article->detach($request->user()->id);
         $article->attach($request->user()->id);
+    }
+
+    public function likes($id){
+        // $article = Article::where('user_id',$id)->with('user')->latest()->get();
+
+        // $articles = $article->likes->sortByDesc('created_at');
+
+        // return $articles;
     }
 }

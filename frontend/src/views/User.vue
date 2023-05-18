@@ -1,67 +1,89 @@
 <script setup>
 import axios from "axios";
-import { onMounted, ref,computed, reactive } from "vue";
+import { onMounted, ref, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import FollowButton from "../components/FollowButton.vue";
 import { useAuthStore } from "../js/store/auth";
 import Card from "../components/Card.vue";
 import { useArticleStore } from "../js/store/articles";
 import { useFollowStore } from "../js/store/follows";
+// import { useLikesStore } from "../js/store/likes";
 
 const auth = useAuthStore();
-const route = useRoute();
-const userName = route.params.userName;
-
 const articles = useArticleStore();
-const getArticles = computed(()=> {
+// const likesArticles = useArticleStore();
+
+const route = useRoute();
+// const userName = route.query.userName;
+const userId = route.query.userId;
+
+const getArticles = computed(() => {
   return articles.getArticles;
-})
-const Articles = computed(()=>{
-  return articles.articles
-})
+});
+const Articles = computed(() => {
+  return articles.articles;
+});
 
 const follows = useFollowStore();
-const getFollowers = computed(()=> {
+const getFollowers = computed(() => {
   return follows.getFollowers;
-})
-const getFollowees = computed(()=> {
+});
+const getFollowees = computed(() => {
   return follows.getFollowees;
-})
+});
 
 onMounted(() => {
-  follows.fetchFollowees(userName);
-  follows.fetchFollowers(userName);
+  follows.fetchFollowees(userId);
+  follows.fetchFollowers(userId);
+  // likesArticles.fetchLikesArticle(userName);
   articles.fetchArticles();
+  likesArticles();
 });
 
 const tabSelect = reactive({
-  userArticles:true,
-  likesArticles:false
-})
+  userArticles: true,
+  likesArticles: false,
+});
 
-const showUserArticles = ()=> {
+const showUserArticles = () => {
   tabSelect.likesArticles = false;
   tabSelect.userArticles = true;
-}
-const showLikesArticles = ()=> {
+};
+const showLikesArticles = () => {
   tabSelect.likesArticles = true;
   tabSelect.userArticles = false;
+};
+
+const api = axios.create({
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
+});
+
+const likesArticle = ref({});
+
+const likesArticles = async () => {
+  await api.get("/sanctum/csrf-cookie").then(async (res) => {
+      await api.get(`/api/user/${userId}/likes`).then((res) => {
+        likesArticle.value = res.data.articles;
+      });
+  });
 }
 
-const  switchArticles = computed(() => {
+console.log(likesArticle);
 
-  if(tabSelect.userArticles){
-    return  getArticles.value.filter(
-        article => article.user.name === userName
-      );
+const switchArticles = computed(() => {
+  if (tabSelect.userArticles) {
+    return getArticles.value.filter(
+      (article) => article.user_id == userId
+    );
   }
-  if(tabSelect.likesArticles){
-    return getArticles.value;
+  if (tabSelect.likesArticles) {
+    return likesArticle.value;
+
   }
+});
 
-})
-
-
+console.log(getArticles.value);
 </script>
 
 <template>
@@ -79,7 +101,7 @@ const  switchArticles = computed(() => {
         </div>
         <h2 class="h5 card-title m-0">
           <a href="" class="text-dark">
-            {{ userName }}
+            {{ userId }}
           </a>
         </h2>
       </div>
@@ -95,25 +117,23 @@ const  switchArticles = computed(() => {
         <button
           class="nav-link w-100 text-muted active"
           @click.prevent="showUserArticles"
-          >
+        >
           記事
         </button>
       </li>
       <li class="nav-item">
-        <button class="nav-link w-100 text-muted"
-        @click.prevent="showLikesArticles"
-        > いいね </button>
+        <button
+          class="nav-link w-100 text-muted"
+          @click.prevent="showLikesArticles"
+        >
+          いいね
+        </button>
       </li>
     </ul>
-    <div
-    v-for="article in switchArticles"
-    :key="article.id"
-    >
-    <Card :article="article"/>
+    <div v-for="article in switchArticles" :key="article.id">
+      <Card :article="article" />
     </div>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

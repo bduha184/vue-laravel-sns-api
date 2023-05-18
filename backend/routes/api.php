@@ -22,8 +22,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::put('/user/{name}/follow',[UserController::class,'follow']);
-    Route::delete('/user/{name}/follow',[UserController::class,'unfollow']);
+    Route::put('/user/{id}/follow',[UserController::class,'follow']);
+    Route::delete('/user/{id}/follow',[UserController::class,'unfollow']);
     Route::post('/articles',[ArticleController::class,'store']);
     Route::put('/articles/{id}',[ArticleController::class,'update']);
     Route::delete('/articles/{id}',[ArticleController::class,'destroy']);
@@ -38,7 +38,8 @@ Route::post('/logout',[LoginController::class,'logout']);
 
 Route::get('/articles',[ArticleController::class,'index']);
 Route::get('/articles/{id}',[ArticleController::class,'show']);
+Route::get('/articles/{id}/likes',[ArticleController::class,'likes']);
 
-Route::get('/user/{name}/followers',[UserController::class,'followers']);
-Route::get('/user/{name}/followees',[UserController::class,'followees']);
-Route::get('/user/{name}/likes',[UserController::class,'likes']);
+Route::get('/user/{id}/followers',[UserController::class,'followers']);
+Route::get('/user/{id}/followees',[UserController::class,'followees']);
+Route::get('/user/{id}/likes',[UserController::class,'likes']);

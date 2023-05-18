@@ -35,7 +35,7 @@ const changeFollowStatus = async () => {
 
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
       await api
-        .put(`/api/user/${route.params.userName}/follow`)
+        .put(`/api/user/${route.query.userName}/follow`)
         .then((res) => {
           if (res.status == 200) {
             console.log(res);
@@ -51,7 +51,7 @@ const changeFollowStatus = async () => {
     follow.setFollowStatus(false);
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
       await api
-        .delete(`/api/user/${route.params.userName}/follow`)
+        .delete(`/api/user/${route.query.userName}/follow`)
         .then((res) => {
           if (res.status == 200) {
             console.log(res);
