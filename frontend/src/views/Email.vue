@@ -5,6 +5,9 @@ import router from "../js/router";
 const sendPasswordResetController = async (email) => {
   const api = axios.create({
     baseURL: "http://localhost:8000",
+    headers:{
+      'Access-Control-Allow-Origin':"http://localhost:5173"
+    },
     withCredentials: true,
   })
   await api.get("/sanctum/csrf-cookie").then(async (res) => {

@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 //     ->name('register');
 
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-    ->middleware('guest')
-    ->name('password.email');
-
+    ->middleware('guest');
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->middleware('guest')
     ->name('password.store');

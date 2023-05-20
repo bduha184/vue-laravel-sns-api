@@ -12,7 +12,6 @@ const props = defineProps({
 });
 const auth = useAuthStore();
 
-// console.log(props.article.user.name);
 
 const api = axios.create({
   baseURL: "http://localhost:8000",
@@ -28,7 +27,6 @@ const destroy = async (id) => {
   });
 };
 
-// console.log(props.article.user.name)
 </script>
 
 

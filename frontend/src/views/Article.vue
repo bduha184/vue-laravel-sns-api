@@ -15,23 +15,6 @@ const article = reactive({
   tags:Object
 })
 
-// const api = axios.create({
-//   baseURL: "http://localhost:8000",
-//   withCredentials: true,
-// });
-
-// const getCountLikes = async ()=> {
-//   await api.get('/sanctum/csrf-cookie').then(async (res) => {
-//     await api.get(`/api/articles/${props.articleId}`)
-//       .then(res=> {
-//         console.log(res);
-//       })
-//   })
-// }
-// onMounted(()=>{
-//   getCountLikes();
-// })
-
 const getArticle =  async () => {
 
 const api = axios.create({

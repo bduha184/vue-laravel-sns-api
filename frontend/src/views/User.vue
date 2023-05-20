@@ -4,7 +4,7 @@ import { onMounted, ref, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import Card from "../components/Card.vue";
 import { useArticleStore } from "../js/store/articles";
-import UserHeader from '../components/UserHeader.vue'
+import UserHeader from "../components/UserHeader.vue";
 
 const articles = useArticleStore();
 
@@ -17,7 +17,6 @@ const getArticles = computed(() => {
 const Articles = computed(() => {
   return articles.articles;
 });
-
 
 onMounted(() => {
   likesArticles();
@@ -46,56 +45,48 @@ const likesArticle = ref({});
 
 const likesArticles = async () => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
-      await api.get(`/api/articles/${userId}/likes`).then((res) => {
-        likesArticle.value = res.data;
+    await api.get(`/api/user/${userId}/likes`).then((res) => {
+      likesArticle.value = res.data.flat();
       });
   });
-}
-
+};
 
 const switchArticles = computed(() => {
-
   if (tabSelect.userArticles) {
-    return getArticles.value.filter(
-      (article) => article.user_id == userId
-    );
+    return getArticles.value.filter((article) => article.user_id == userId);
   }
   if (tabSelect.likesArticles) {
     return likesArticle.value;
-
   }
 });
-
 
 </script>
 
 <template>
   <div class="container">
-    <UserHeader/>
+    <UserHeader />
     <ul class="nav nav-tabs nav-justified mt-3">
       <li class="nav-item">
         <button
           class="nav-link w-100 text-muted"
-          :class="{active:tabSelect.userArticles}"
+          :class="{ active: tabSelect.userArticles }"
           @click.prevent="showUserArticles"
-          >
+        >
           記事
         </button>
       </li>
       <li class="nav-item">
         <button
-        class="nav-link w-100 text-muted"
-        :class="{active:tabSelect.likesArticles}"
+          class="nav-link w-100 text-muted"
+          :class="{ active: tabSelect.likesArticles }"
           @click.prevent="showLikesArticles"
         >
           いいね
         </button>
       </li>
     </ul>
-    {{ likesArticle }}
     <div v-for="article in switchArticles" :key="article.id">
-      <Card :article="article"
-      />
+      <Card :article="article" />
     </div>
   </div>
 </template>

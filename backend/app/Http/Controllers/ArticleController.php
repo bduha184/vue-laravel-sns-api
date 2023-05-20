@@ -105,14 +105,17 @@ class ArticleController extends Controller
         $article->attach($request->user()->id);
     }
 
-    public function likes($id){
-        $user = User::where('id',$id)->first();
+    // public function likes($id){
+    //     $user = User::where('id',$id)->first();
 
-        $articles = $user->likes->sortByDesc('created_at');
+    //     // $articles =Article::where('id',$user->likes)->latest()->get();
 
-        return [
-            'user'=>$user,
-            'articles'=>$articles
-        ];
-    }
+    //     $test = $user->likes;
+
+    //     return [
+    //         // 'user'=>$user,
+    //         // 'articles'=>$articles,
+    //         'test'=>$test
+    //     ];
+    // }
 }

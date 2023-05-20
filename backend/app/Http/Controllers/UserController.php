@@ -5,46 +5,52 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\User;
+use App\Models\Article;
+
 
 class UserController extends Controller
 {
 
-    public function show() {
+    public function show()
+    {
         $users =  User::all();
 
-        $articles = $users->each(function($e){
+        $articles = $users->each(function ($e) {
             $e->articles->sortByDesc('created_at');
         });
         // $articles = $users->articles->sortByDesc('crated_at');
 
         return [
             // 'users'=>$users,
-            'articles'=>$articles
+            'articles' => $articles
         ];
     }
 
-    public function followers($id){
-        $user = User::where('id',$id)->first();
+    public function followers($id)
+    {
+        $user = User::where('id', $id)->first();
         $followers = $user->followers->sortByDesc('created_at');
 
         return [
-            'user'=>$user,
+            'user' => $user,
             'followers' => $followers
         ];
     }
 
-    public function followees($id){
-        $user = User::where('id',$id)->first();
+    public function followees($id)
+    {
+        $user = User::where('id', $id)->first();
         $followees = $user->followees->sortByDesc('created_at');
 
         return [
-            'user'=>$user,
+            'user' => $user,
             'followees' => $followees
         ];
     }
 
-    public function follow(Request $request, $id){
-        $user = User::where('id',$id)->first();
+    public function follow(Request $request, $id)
+    {
+        $user = User::where('id', $id)->first();
 
         // if($user->id === $request->user()->id){
         //     return abort('404', 'Cannot follow yourself.');
@@ -53,25 +59,29 @@ class UserController extends Controller
         $request->user()->followees()->detach($user);
         $request->user()->followees()->attach($user);
 
-        return ['id'=>$id];
+        return ['id' => $id];
     }
 
-    public function unfollow(Request $request, $id){
-        $user = User::where('name',$id)->first();
+    public function unfollow(Request $request, $id)
+    {
+        $user = User::where('name', $id)->first();
 
         $request->user()->followees()->detach($user);
 
-        return ['id'=>$id];
+        return ['id' => $id];
     }
 
-    public function likes($id){
-        $user = User::where('id',$id)->first();
+    public function likes($id)
+    {
+        $user = User::where('id', $id)->first();
+        $likes_articles = $user->likes->all();
+        $articleArray = [];
 
-        $articles = $user->likes->get();
+        foreach ($likes_articles as $likes_article) {
+            $article = Article::where('id', $likes_article->id)->with('user')->get();
+            array_push($articleArray, $article);
+        }
 
-        return [
-            'user'=>$user,
-            'articles'=>$articles,
-        ];
+        return $articleArray;
     }
 }
