@@ -40,6 +40,7 @@ Route::get('/articles',[ArticleController::class,'index']);
 Route::get('/articles/{id}',[ArticleController::class,'show']);
 Route::get('/articles/{id}/likes',[ArticleController::class,'likes']);
 
+Route::get('/users',[UserController::class,'show']);
 Route::get('/user/{id}/followers',[UserController::class,'followers']);
 Route::get('/user/{id}/followees',[UserController::class,'followees']);
 Route::get('/user/{id}/likes',[UserController::class,'likes']);

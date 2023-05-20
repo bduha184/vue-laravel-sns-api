@@ -2,19 +2,13 @@
 import axios from "axios";
 import { onMounted, ref, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
-import FollowButton from "../components/FollowButton.vue";
-import { useAuthStore } from "../js/store/auth";
 import Card from "../components/Card.vue";
 import { useArticleStore } from "../js/store/articles";
-import { useFollowStore } from "../js/store/follows";
-// import { useLikesStore } from "../js/store/likes";
+import UserHeader from '../components/UserHeader.vue'
 
-const auth = useAuthStore();
 const articles = useArticleStore();
-// const likesArticles = useArticleStore();
 
 const route = useRoute();
-// const userName = route.query.userName;
 const userId = route.query.userId;
 
 const getArticles = computed(() => {
@@ -24,19 +18,8 @@ const Articles = computed(() => {
   return articles.articles;
 });
 
-const follows = useFollowStore();
-const getFollowers = computed(() => {
-  return follows.getFollowers;
-});
-const getFollowees = computed(() => {
-  return follows.getFollowees;
-});
 
 onMounted(() => {
-  follows.fetchFollowees(userId);
-  follows.fetchFollowers(userId);
-  // likesArticles.fetchLikesArticle(userName);
-  articles.fetchArticles();
   likesArticles();
 });
 
@@ -63,15 +46,15 @@ const likesArticle = ref({});
 
 const likesArticles = async () => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
-      await api.get(`/api/user/${userId}/likes`).then((res) => {
-        likesArticle.value = res.data.articles;
+      await api.get(`/api/articles/${userId}/likes`).then((res) => {
+        likesArticle.value = res.data;
       });
   });
 }
 
-console.log(likesArticle);
 
 const switchArticles = computed(() => {
+
   if (tabSelect.userArticles) {
     return getArticles.value.filter(
       (article) => article.user_id == userId
@@ -83,57 +66,36 @@ const switchArticles = computed(() => {
   }
 });
 
-console.log(getArticles.value);
+
 </script>
 
 <template>
   <div class="container">
-    <div class="card mt-3">
-      <div class="card-body">
-        <div class="d-flex flex-row">
-          <a href="" class="text-dark">
-            <i class="fas fa-user-circle fa-3x"></i>
-          </a>
-          <FollowButton
-            class="ml-auto"
-            v-if="auth.isLoggedIn.status && auth.isLoggedIn.name !== userName"
-          />
-        </div>
-        <h2 class="h5 card-title m-0">
-          <a href="" class="text-dark">
-            {{ userId }}
-          </a>
-        </h2>
-      </div>
-      <div class="card-body">
-        <div class="card-text">
-          <a href="" class="text-muted"> {{ follows.followees }} フォロー </a>
-          <a href="" class="text-muted"> {{ follows.followers }} フォロワー </a>
-        </div>
-      </div>
-    </div>
+    <UserHeader/>
     <ul class="nav nav-tabs nav-justified mt-3">
       <li class="nav-item">
         <button
-          class="nav-link w-100 text-muted active"
+          class="nav-link w-100 text-muted"
+          :class="{active:tabSelect.userArticles}"
           @click.prevent="showUserArticles"
-        >
+          >
           記事
         </button>
       </li>
       <li class="nav-item">
         <button
-          class="nav-link w-100 text-muted"
+        class="nav-link w-100 text-muted"
+        :class="{active:tabSelect.likesArticles}"
           @click.prevent="showLikesArticles"
         >
           いいね
         </button>
       </li>
     </ul>
+    {{ likesArticle }}
     <div v-for="article in switchArticles" :key="article.id">
-      <Card :article="article" />
+      <Card :article="article"
+      />
     </div>
   </div>
 </template>
-
-<style scoped></style>

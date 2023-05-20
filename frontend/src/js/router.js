@@ -7,6 +7,7 @@ import Edit from '../views/Edit.vue'
 import Login from '../views/Login.vue'
 import User from '../views/User.vue'
 import Email from '../views/Email.vue'
+import Person from '../views/person.vue'
 import { useAuthStore } from './store/auth';
 
 
@@ -51,6 +52,12 @@ const router = createRouter({
       component: Edit,
       name:'edit',
       props:true
+    },
+    {
+      path:'/person',
+      name:'person',
+      component:Person,
+      props:true,
     },
 
   ]

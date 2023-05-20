@@ -62,7 +62,11 @@ const logout = async () => {
         >
           <RouterLink
             class="dropdown-item"
-            :to="`/users/${auth.isLoggedIn.name}`"
+            :to="{
+            name: 'user',
+            query:{userId:auth.isLoggedIn.userId},
+            }"
+
           >
           マイページ
           </RouterLink>

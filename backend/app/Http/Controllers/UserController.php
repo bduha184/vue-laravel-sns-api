@@ -9,20 +9,22 @@ use App\Models\User;
 class UserController extends Controller
 {
 
-    public function show($name) {
-        $user =  User::where('name',$name)->first();
+    public function show() {
+        $users =  User::all();
 
-        $articles = $user->articles->sortByDesc('crated_at');
+        $articles = $users->each(function($e){
+            $e->articles->sortByDesc('created_at');
+        });
+        // $articles = $users->articles->sortByDesc('crated_at');
 
         return [
-            'user'=>$user,
+            // 'users'=>$users,
             'articles'=>$articles
         ];
     }
 
-
-    public function followers($name){
-        $user = User::where('id',$name)->first();
+    public function followers($id){
+        $user = User::where('id',$id)->first();
         $followers = $user->followers->sortByDesc('created_at');
 
         return [
@@ -31,8 +33,8 @@ class UserController extends Controller
         ];
     }
 
-    public function followees($name){
-        $user = User::where('id',$name)->first();
+    public function followees($id){
+        $user = User::where('id',$id)->first();
         $followees = $user->followees->sortByDesc('created_at');
 
         return [
@@ -41,8 +43,8 @@ class UserController extends Controller
         ];
     }
 
-    public function follow(Request $request,string $name){
-        $user = User::where('name',$name)->first();
+    public function follow(Request $request, $id){
+        $user = User::where('id',$id)->first();
 
         // if($user->id === $request->user()->id){
         //     return abort('404', 'Cannot follow yourself.');
@@ -51,21 +53,21 @@ class UserController extends Controller
         $request->user()->followees()->detach($user);
         $request->user()->followees()->attach($user);
 
-        return ['name'=>$name];
+        return ['id'=>$id];
     }
 
-    public function unfollow(Request $request,string $name){
-        $user = User::where('name',$name)->first();
+    public function unfollow(Request $request, $id){
+        $user = User::where('name',$id)->first();
 
         $request->user()->followees()->detach($user);
 
-        return ['name'=>$name];
+        return ['id'=>$id];
     }
 
-    public function likes($name){
-        $user = User::where('id',$name)->first();
+    public function likes($id){
+        $user = User::where('id',$id)->first();
 
-        $articles = $user->likes->sortByDesc('created_at');
+        $articles = $user->likes->get();
 
         return [
             'user'=>$user,

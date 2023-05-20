@@ -35,7 +35,7 @@ const changeFollowStatus = async () => {
 
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
       await api
-        .put(`/api/user/${route.query.userName}/follow`)
+        .put(`/api/user/${route.query.userId}/follow`)
         .then((res) => {
           if (res.status == 200) {
             console.log(res);
@@ -51,7 +51,7 @@ const changeFollowStatus = async () => {
     follow.setFollowStatus(false);
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
       await api
-        .delete(`/api/user/${route.query.userName}/follow`)
+        .delete(`/api/user/${route.query.userId}/follow`)
         .then((res) => {
           if (res.status == 200) {
             console.log(res);
@@ -67,10 +67,9 @@ const changeFollowStatus = async () => {
 };
 
 
-const emit = defineEmits(["followStatus"]);
 </script>
 <template>
-  <div>
+  <div class="ml-auto">
     <button
       class="btn-sm shadow-none border border-primary p-2"
       :class="buttonColor"

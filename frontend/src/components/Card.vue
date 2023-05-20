@@ -1,16 +1,16 @@
 <script setup>
 import axios from "axios";
-import {  onMounted, ref } from "vue";
+import {  computed, onMounted, ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { getDays } from "../js/common";
 import router from "../js/router";
 import { useAuthStore } from "../js/store/auth";
 import ArticleLike from "./ArticleLike.vue";
-const auth = useAuthStore();
 
 const props = defineProps({
   article: Object,
 });
+const auth = useAuthStore();
 
 // console.log(props.article.user.name);
 
@@ -21,14 +21,14 @@ const api = axios.create({
 const destroy = async (id) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.delete(`/api/articles/${id}`).then((res) => {
-      console.log(res.status)
-      if (res.status == 200) {
+      // if (res.status == 200) {
         router.push("/");
-      }
+      // }
     });
   });
 };
 
+// console.log(props.article.user.name)
 </script>
 
 
@@ -39,7 +39,10 @@ const destroy = async (id) => {
         class="text-dark"
         :to="{
           name: 'user',
-          query:{userId:props.article.user_id},
+          query:{
+            userName:props.article.user.name,
+            userId:props.article.user_id
+          },
         }"
       >
         <i class="fas fa-user-circle fa-3x mr-1"></i>
@@ -49,10 +52,13 @@ const destroy = async (id) => {
           class="text-dark"
           :to="{
             name: 'user',
-            query:{userId:props.article.user_id},
+            query:{
+              userName:props.article.user.name,
+              userId:props.article.user_id
+            },
           }"
         >
-          {{ props.article.user_id }}
+        {{ props.article.user.name }}
         </RouterLink>
         <div class="font-weight-lighter">
           {{ getDays(props.article.created_at) }}

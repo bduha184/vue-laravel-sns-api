@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ArticleRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
-use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +16,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return Article::latest()->get();
+        return Article::latest()->with('user')->get();
     }
 
     /**
@@ -43,9 +43,9 @@ class ArticleController extends Controller
         //     $article->tags()->attach($tag);
         // });
 
-        // return response()->json([
-        //     'message' => 'created successfully'
-        // ], Response::HTTP_CREATED);
+        return response()->json([
+            'message' => 'created successfully'
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -106,10 +106,13 @@ class ArticleController extends Controller
     }
 
     public function likes($id){
-        // $article = Article::where('user_id',$id)->with('user')->latest()->get();
+        $user = User::where('id',$id)->first();
 
-        // $articles = $article->likes->sortByDesc('created_at');
+        $articles = $user->likes->sortByDesc('created_at');
 
-        // return $articles;
+        return [
+            'user'=>$user,
+            'articles'=>$articles
+        ];
     }
 }
