@@ -30,11 +30,11 @@ const tagsJson = computed(() => {
   return JSON.stringify(tags)
 });
 
-// const emit = defineEmits(['inputTags'])
+const emit = defineEmits(['inputTags'])
 
-// const inputTags = () => {
-//   emit('inputTags',tags.value);
-// }
+const inputTags = () => {
+  emit('inputTags',tags.value);
+}
 
 </script>
 
@@ -43,11 +43,10 @@ const tagsJson = computed(() => {
     <input
       type="hidden"
       name="tags"
-      :value="tagsJson"
+      v-model="inputTags"
       >
       <vue3-tags-input
       :tags="tags"
-      v-model="inputTags.tags"
       placeholder="タグを5個まで入力できます"
       @on-tags-changed="newTags => tags = newTags"
     />

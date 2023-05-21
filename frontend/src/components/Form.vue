@@ -12,10 +12,10 @@ const inputTags = ref([]);
 //   body:{type:String,default:''},
 // });
 
-// const emitTags = (e) => {
-//   console.log(e);
-//   // articleData.tags = e;
-// }
+const emitTags = computed(() => {
+
+  // articleData.tags = e;
+})
 
 // const emit = defineEmits(['articleData']);
 
@@ -31,12 +31,12 @@ const inputTags = ref([]);
     v-model="articleData.title"
     >
   </div>
-  <!-- <div class="form-group">
+  <div class="form-group">
     <ArticleTagsInput
-    :inputTags="inputTags"
-    v-model="inputTags.value"
+    @inputTags="inputTags"
+    v-model="articleData.tags"
     />
-  </div> -->
+  </div>
   <div class="form-group">
     <label></label>
     <textarea name="body" required class="form-control" rows="16" placeholder="本文"

@@ -6,26 +6,30 @@ import axios from "axios";
 import { useAuthStore } from "../js/store/auth";
 
 const auth = useAuthStore();
+const api = axios.create({
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
+});
 
-
-const login = async (email,password) => {
-  const api = axios.create({
-    baseURL:"http://localhost:8000",
-    withCredentials:true,
-  })
-  await api.get("/sanctum/csrf-cookie")
-  .then(async (res)=>{
-    await api.post("/api/login",{email,password})
-    .then(res=>{
-      if(res.status == 200) {
-      auth.setUser(true,res.data.name,res.data.id);
-        router.push('/')
-
+const login = async (email, password) => {
+  await api.get("/sanctum/csrf-cookie").then(async (res) => {
+    await api.post("/api/login", { email, password }).then((res) => {
+      if (res.status == 200) {
+        auth.setUser(true, res.data.name, res.data.id);
+        router.push("/");
       }
-    })
-  })
-
+    });
+  });
 };
+
+const googleLogin = async () => {
+  await api.get("/sanctum/csrf-cookie").then(async (res) => {
+    await api.get("/api/login/google").then((res) => {
+      console.log(res.data);
+    });
+  });
+}
+
 </script>
 
 <template>
@@ -36,6 +40,12 @@ const login = async (email,password) => {
         <div class="card mt-3">
           <div class="card-body text-center">
             <h2 class="h3 card-title text-center mt-2">ログイン</h2>
+            <button
+              class="btn btn-block btn-danger"
+              @click.prevent="googleLogin"
+            >
+              <i class="fab fa-google mr-1"></i>Googleでログイン
+            </button>
             <div class="card-text">
               <form method="POST">
                 <input type="hidden" name="_token" :value="qwer12345" />
@@ -64,15 +74,13 @@ const login = async (email,password) => {
                 </div>
                 <input type="hidden" name="remember" id="remember" value="on" />
                 <div class="text-left">
-                  <RouterLink
-                  class="card-text"
-                  to="/email"
-                  >
-                  パスワードを忘れた方
-                </RouterLink>
+                  <RouterLink class="card-text" to="/email">
+                    パスワードを忘れた方
+                  </RouterLink>
                 </div>
                 <button
-                  class="btn btn-block blue-gradient mt-2 mb-2" type="button"
+                  class="btn btn-block blue-gradient mt-2 mb-2"
+                  type="button"
                   @click="login(email, password)"
                 >
                   ログイン

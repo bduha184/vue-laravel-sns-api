@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
+use Laravel\Socialite\Facades\Socialite;
 
 
 class LoginController extends Controller
@@ -36,6 +37,11 @@ class LoginController extends Controller
         Auth::logout();
 
         return response()->json(Response::HTTP_OK);
+    }
+    
+    public function redirectToProvider(string $provider)
+    {
+        return Socialite::driver($provider)->redirect();
     }
 
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\ArticleRequest;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\User;
+use App\Models\Tag;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return Article::latest()->with('user')->get();
+        return Article::latest()->with('user')->with('tags')->get();
     }
 
     /**
@@ -38,14 +39,15 @@ class ArticleController extends Controller
         $article->save();
 
 
-        // $request->tags->each(function($tagName) use ($article){
-        //     $tag = Tag::firstOrCreate(['name'=>$tagName]);
-        //     $article->tags()->attach($tag);
-        // });
+        collect($request->tags)->each(function($tagName) use ($article){
+            $tag = Tag::firstOrCreate(['name'=>$tagName]);
+            $article->tags()->attach($tag);
+        });
 
-        return response()->json([
-            'message' => 'created successfully'
-        ], Response::HTTP_CREATED);
+        // return $request->tags;
+        // return response()->json([
+        //     'message' => 'created successfully'
+        // ], Response::HTTP_CREATED);
     }
 
     /**

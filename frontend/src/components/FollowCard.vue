@@ -39,7 +39,7 @@ const props = defineProps({
           }"
         class="text-dark">
       </RouterLink>
-      {{  props.follow.id }}
+      {{  props.follow.name }}
       </h2>
     </div>
   </div>

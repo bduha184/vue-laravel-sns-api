@@ -24,7 +24,7 @@ class Article extends Model
         return $this->belongsToMany(User::class,'likes')->withTimestamps();
     }
     public function tags():BelongsToMany{
-        return $this->belongsToMany(Tag::class,'article_tag','article_id','tag_id')->withTimestamps();
+        return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
 
