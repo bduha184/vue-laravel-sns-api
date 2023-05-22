@@ -17,7 +17,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return Article::latest()->with('user')->with('tags')->get();
+        return Article::latest()->with('user')->with('tags')->with('likes')->get();
     }
 
     /**

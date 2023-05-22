@@ -31,14 +31,13 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::delete('/articles/{id}/unlike',[ArticleController::class,'unlike']);
 });
 
-
 Route::post('/register',[RegisterController::class,'register']);
+Route::post('/login',[LoginController::class,'login']);
 Route::post('/logout',[LoginController::class,'logout']);
 
-Route::prefix('login')->group(function () {
-    Route::post('/login',[LoginController::class,'login']);
-    Route::get('/{provider}', [LoginController::class,'redirectToProvider']);
-});
+// Route::prefix('login')->group(function () {
+//     Route::get('/{provider}', [LoginController::class,'redirectToProvider']);
+// });
 
 Route::get('/articles',[ArticleController::class,'index']);
 Route::get('/articles/{id}',[ArticleController::class,'show']);

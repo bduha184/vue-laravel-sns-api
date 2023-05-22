@@ -8,31 +8,13 @@ const props = defineProps({
   inputTags:Object,
 })
 
-// const autocompleteItems = reactive([
-//   {
-//     text: "Spain",
-//   },
-//   {
-//     text: "France",
-//   },
-//   {
-//     text: "USA",
-//   },
-//   {
-//     text: "Germany",
-//   },
-//   {
-//     text: "China",
-//   },
-// ]);
-
 const tagsJson = computed(() => {
-  return JSON.stringify(tags)
+  return JSON.stringify(tags.value)
 });
 
-const emit = defineEmits(['inputTags'])
+const emit = defineEmits(['inputTags']);
 
-const inputTags = () => {
+const emitTags = () =>{
   emit('inputTags',tags.value);
 }
 
@@ -43,7 +25,8 @@ const inputTags = () => {
     <input
       type="hidden"
       name="tags"
-      v-model="inputTags"
+      :value="tagsJson"
+      @keypress.enter="emitTags"
       >
       <vue3-tags-input
       :tags="tags"

@@ -1,6 +1,5 @@
 <script setup>
-import { ref,onMounted, computed, compile } from 'vue';
-import axios from 'axios';
+import { onMounted, computed } from 'vue';
 import { useArticleStore } from '../js/store/articles';
 import Card from '../components/Card.vue'
 

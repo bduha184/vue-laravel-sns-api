@@ -13,10 +13,9 @@ const submit = async (title, body,tags) => {
   });
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.post("/api/articles", { title, body,tags}).then((res) => {
-      console.log(res.data)
-      // if (res.status == 200) {
-      //   router.push("/");
-      // }
+      if (res.status == 200) {
+        router.push("/");
+      }
     });
   });
 }
@@ -39,7 +38,7 @@ const submit = async (title, body,tags) => {
                 <button
                   type="button"
                   class="btn blue-gradient btn-block"
-                  @click="submit(articleData.title,articleData.body,articleData.tags)"
+                  @click="submit(articleData.title,articleData.body,['tags','test'])"
                   >
                   投稿する
                 </button>

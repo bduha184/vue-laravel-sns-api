@@ -104,3 +104,12 @@ php artisan migratoion create_follows_table
 php artisan migration create_follows_table
 php artisan migration create_follows_table
 exit
+cd backend
+php artisan config:clear
+php artisan cache:config
+php artisan cache:clear
+php artisan route:list
+exit
+cd backend
+php artisan migrate
+exit;

@@ -12,15 +12,10 @@ const inputTags = ref([]);
 //   body:{type:String,default:''},
 // });
 
-const emitTags = computed(() => {
-
-  // articleData.tags = e;
-})
-
 // const emit = defineEmits(['articleData']);
-
 // emit('articleData',articleData);
 
+console.log(inputTags)
 </script>
 
 <template>
@@ -32,8 +27,9 @@ const emitTags = computed(() => {
     >
   </div>
   <div class="form-group">
+    {{ inputTags }}
     <ArticleTagsInput
-    @inputTags="inputTags"
+    @inputTags="inputTags.values = $event"
     v-model="articleData.tags"
     />
   </div>
