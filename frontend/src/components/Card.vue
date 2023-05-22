@@ -149,7 +149,13 @@ const destroy = async (id) => {
       v-for="tag in props.article.tags"
       :key="tag.id"
       >
-        <a href="" class="border p-1 mr-1 mt-1 text-muted"> #{{ tag.name }} </a>
+        <RouterLink
+  
+        :to="{
+          name:'tag',
+          query:{tagName:tag.name}
+        }"
+        class="border p-1 mr-1 mt-1 text-muted"> #{{ tag.name }} </RouterLink>
       </div>
     </div>
   </div>

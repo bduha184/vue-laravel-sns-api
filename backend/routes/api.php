@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,3 +48,5 @@ Route::get('/users',[UserController::class,'show']);
 Route::get('/user/{id}/followers',[UserController::class,'followers']);
 Route::get('/user/{id}/followees',[UserController::class,'followees']);
 Route::get('/user/{id}/likes',[UserController::class,'likes']);
+
+Route::get('/tags/{name}',[TagController::class,'show']);

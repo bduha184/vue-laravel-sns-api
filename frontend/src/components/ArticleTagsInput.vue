@@ -1,32 +1,18 @@
 <script setup>
 import Vue3TagsInput from "vue3-tags-input";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 const tags = ref([]);
-
-// const props = defineProps({
-//   inputTags:Object,
-// })
-
-const tagsJson = computed(() => {
-  return JSON.stringify(tags.value)
-});
-
 const emit = defineEmits(['emitInputTags']);
 
 const emitTags = () =>{
-  emit('emitInputTags',tagsJson);
+  emit('emitInputTags',tags.value);
 }
 
 </script>
 
 <template>
   <div>
-    <input
-      type="hidden"
-      name="tags"
-      :value="tagsJson"
-      >
       <vue3-tags-input
       :tags="tags"
       @keydown.enter="emitTags"

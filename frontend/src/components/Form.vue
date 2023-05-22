@@ -5,15 +5,6 @@ const props = defineProps({
   articleData:Object,
 });
 
-// const inputTags = ref([]);
-
-// const articleData = reactive({
-//   title:{type:String,default:''},
-//   body:{type:String,default:''},
-// });
-
-// const emit = defineEmits(['articleData']);
-// emit('articleData',articleData);
 
 const emitTags = (tags) =>{
   props.articleData.tags = tags;
@@ -30,10 +21,8 @@ const emitTags = (tags) =>{
     >
   </div>
   <div class="form-group">
-    {{ inputTags }}
     <ArticleTagsInput
     @emitInputTags="emitTags"
-    v-model="articleData.tags"
     />
   </div>
   <div class="form-group">

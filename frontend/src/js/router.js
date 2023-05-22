@@ -8,6 +8,7 @@ import Login from '../views/Login.vue'
 import User from '../views/User.vue'
 import Email from '../views/Email.vue'
 import Person from '../views/person.vue'
+import Tag from '../views/Tags/Show.vue'
 import { useAuthStore } from './store/auth';
 
 
@@ -57,6 +58,12 @@ const router = createRouter({
       path:'/person',
       name:'person',
       component:Person,
+      props:true,
+    },
+    {
+      path:'/tags',
+      name:'tag',
+      component:Tag,
       props:true,
     },
 
