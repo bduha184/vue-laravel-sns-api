@@ -32,13 +32,13 @@ const submit = async (title, body,tags) => {
             <div class="card-text">
               <form method="POST">
                 <Form :articleData="articleData" />
-                <!-- {{ articleData.title }}
+                {{ articleData.title }}
                 {{ articleData.body }}
-                {{ articleData.tags }} -->
+                {{ articleData.tags }}
                 <button
                   type="button"
                   class="btn blue-gradient btn-block"
-                  @click="submit(articleData.title,articleData.body,['tags','test'])"
+                  @click="submit(articleData.title,articleData.body,articleData.tags)"
                   >
                   投稿する
                 </button>

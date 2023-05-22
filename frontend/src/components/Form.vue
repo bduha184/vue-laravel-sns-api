@@ -5,7 +5,7 @@ const props = defineProps({
   articleData:Object,
 });
 
-const inputTags = ref([]);
+// const inputTags = ref([]);
 
 // const articleData = reactive({
 //   title:{type:String,default:''},
@@ -15,7 +15,10 @@ const inputTags = ref([]);
 // const emit = defineEmits(['articleData']);
 // emit('articleData',articleData);
 
-console.log(inputTags)
+const emitTags = (tags) =>{
+  props.articleData.tags = tags;
+}
+
 </script>
 
 <template>
@@ -29,7 +32,7 @@ console.log(inputTags)
   <div class="form-group">
     {{ inputTags }}
     <ArticleTagsInput
-    @inputTags="inputTags.values = $event"
+    @emitInputTags="emitTags"
     v-model="articleData.tags"
     />
   </div>

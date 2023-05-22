@@ -4,18 +4,18 @@ import { computed, ref } from "vue";
 
 const tags = ref([]);
 
-const props = defineProps({
-  inputTags:Object,
-})
+// const props = defineProps({
+//   inputTags:Object,
+// })
 
 const tagsJson = computed(() => {
   return JSON.stringify(tags.value)
 });
 
-const emit = defineEmits(['inputTags']);
+const emit = defineEmits(['emitInputTags']);
 
 const emitTags = () =>{
-  emit('inputTags',tags.value);
+  emit('emitInputTags',tagsJson);
 }
 
 </script>
@@ -26,10 +26,10 @@ const emitTags = () =>{
       type="hidden"
       name="tags"
       :value="tagsJson"
-      @keypress.enter="emitTags"
       >
       <vue3-tags-input
       :tags="tags"
+      @keydown.enter="emitTags"
       placeholder="タグを5個まで入力できます"
       @on-tags-changed="newTags => tags = newTags"
     />
