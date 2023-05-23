@@ -32,9 +32,6 @@ const submit = async (title, body,tags) => {
             <div class="card-text">
               <form method="POST">
                 <Form :articleData="articleData" />
-                {{ articleData.title }}
-                {{ articleData.body }}
-                {{ articleData.tags }}
                 <button
                   type="button"
                   class="btn blue-gradient btn-block"

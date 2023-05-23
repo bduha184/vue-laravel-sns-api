@@ -25,7 +25,7 @@ const login = async (email, password) => {
 const googleLogin = async () => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.get("/api/login/google").then((res) => {
-      console.log(res.data);
+      console.log(res);
     });
   });
 }

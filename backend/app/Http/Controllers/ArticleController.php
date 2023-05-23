@@ -45,9 +45,9 @@ class ArticleController extends Controller
         });
 
         // return $request->tags;
-        // return response()->json([
-        //     'message' => 'created successfully'
-        // ], Response::HTTP_CREATED);
+        return response()->json([
+            'message' => 'created successfully'
+        ], Response::HTTP_CREATED);
     }
 
     /**

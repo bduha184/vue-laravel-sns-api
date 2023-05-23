@@ -1,22 +1,18 @@
 <script setup>
 import axios from "axios";
+import { ref } from "vue";
 import router from "../js/router";
 
+const mailAlert = ref('');
+
+const api = axios.create({
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
+})
 const sendPasswordResetController = async (email) => {
-  const api = axios.create({
-    baseURL: "http://localhost:8000",
-    headers:{
-      'Access-Control-Allow-Origin':"http://localhost:5173"
-    },
-    withCredentials: true,
-  })
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.post("/forgot-password", { email }).then((res) => {
-      console.log(res);
-      // if(res.status == 200) {
-      // auth.setUser(res.data.name);
-      //   router.push('/')
-      // }
+        mailAlert.value = res.data;
     });
   });
 };
@@ -30,7 +26,11 @@ const sendPasswordResetController = async (email) => {
         <div class="card mt-3">
           <div class="card-body text-center">
             <h2 class="h3 card-title text-center mt-2">パスワード再設定</h2>
-            <div class="card-text alert alert-success"></div>
+            <div class="card-text alert alert-success"
+            v-show="mailAlert != ''"
+            >
+          {{ mailAlert }}
+          </div>
             <div class="card-text">
               <form method="POST">
                 <div class="md-form">

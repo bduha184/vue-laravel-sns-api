@@ -113,3 +113,30 @@ exit
 cd backend
 php artisan migrate
 exit;
+cd bakcend
+cd backend
+php artisan migrate
+php artisan make:controller TagController
+php artisan make:controller TagController
+php artisan make:mail BareMail
+php artisan make:notification PasswordResetNotification
+php artisan route:list
+php artisan make:mail BareMail
+php artisan route:list
+php artisan route:list
+php artisan migrate:fresh
+php artisan config:clear
+php artisan cache:clear
+php artisan route:list
+ext
+exit
+cd backend
+php artisan migrate:fresh
+php artisan config:cache
+php artisan config:clear
+eixt
+exit
+cd backend
+php artisan config:clear
+eixt
+exit
