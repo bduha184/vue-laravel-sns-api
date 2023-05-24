@@ -9,6 +9,7 @@ import User from '../views/User.vue'
 import Email from '../views/Email.vue'
 import Person from '../views/person.vue'
 import Tag from '../views/Tags/Show.vue'
+import ResetPassword from '../views/ResetPassword.vue'
 import { useAuthStore } from './store/auth';
 
 
@@ -66,6 +67,11 @@ const router = createRouter({
       component:Tag,
       props:true,
     },
+    {
+      path:'/reset-password/',
+      component:ResetPassword,
+      props:true,
+    }
 
   ]
 })

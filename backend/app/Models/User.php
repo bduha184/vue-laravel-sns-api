@@ -10,7 +10,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Mail\BareMail;
-use App\Notifications\ResetPasswordNotification;
+use App\Notifications\ResetPassword;
+// use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -39,7 +40,7 @@ class User extends Authenticatable
 
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new ResetPasswordNotification($token));
+        $this->notify(new ResetPassword($token));
     }
 
     /**
