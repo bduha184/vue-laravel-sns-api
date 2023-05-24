@@ -5,21 +5,10 @@ const props = defineProps({
   articleData:Object,
 });
 
-const inputTags = ref([]);
 
-// const articleData = reactive({
-//   title:{type:String,default:''},
-//   body:{type:String,default:''},
-// });
-
-// const emitTags = (e) => {
-//   console.log(e);
-//   // articleData.tags = e;
-// }
-
-// const emit = defineEmits(['articleData']);
-
-// emit('articleData',articleData);
+const emitTags = (tags) =>{
+  props.articleData.tags = tags;
+}
 
 </script>
 
@@ -31,12 +20,11 @@ const inputTags = ref([]);
     v-model="articleData.title"
     >
   </div>
-  <!-- <div class="form-group">
+  <div class="form-group">
     <ArticleTagsInput
-    :inputTags="inputTags"
-    v-model="inputTags.value"
+    @emitInputTags="emitTags"
     />
-  </div> -->
+  </div>
   <div class="form-group">
     <label></label>
     <textarea name="body" required class="form-control" rows="16" placeholder="本文"
