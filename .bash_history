@@ -140,3 +140,7 @@ cd backend
 php artisan config:clear
 eixt
 exit
+cd backend
+php artisan migrate:fresh
+eixt
+exit

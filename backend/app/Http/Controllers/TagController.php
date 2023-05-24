@@ -20,9 +20,6 @@ class TagController extends Controller
             $article_with_user = Article::where('id',$article->id)->with('user')->with('tags')->get();
             array_push($articles_with_user,$article_with_user);
         }
-
         return $articles_with_user;
-
-
     }
 }
