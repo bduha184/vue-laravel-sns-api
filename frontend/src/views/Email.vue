@@ -4,15 +4,20 @@ import { ref } from "vue";
 import router from "../js/router";
 
 const mailAlert = ref('');
+const email = ref('')
 
 const api = axios.create({
   baseURL: "http://localhost:8000",
   withCredentials: true,
 })
 const sendPasswordResetController = async (email) => {
+  if(email == '') {
+    mailAlert.value = 'メールアドレスを入力してください'
+    return false
+  }
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.post("/forgot-password", { email }).then((res) => {
-        mailAlert.value = res.data;
+        mailAlert.value = res.data.status;
     });
   });
 };

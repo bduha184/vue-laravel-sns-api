@@ -144,3 +144,15 @@ cd backend
 php artisan migrate:fresh
 eixt
 exit
+cd backend
+php artisan migrate:fresh
+php artisan make:notification ResetPasswordNotification
+php artisan route:list
+php artisan config:clear
+php artisan cache:clear
+php artisan route:list
+COMPOSER_MEMORY_LIMIT=-1 composer require laravel/socialite
+php artisan route:list
+php artisan route:list
+php artisan route:list
+exit
