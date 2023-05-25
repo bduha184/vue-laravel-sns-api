@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Mail\BareMail;
+use App\Notifications\ResetPassword;
+// use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -35,6 +38,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
+    }
+
     /**
      * The attributes that should be cast.
      *
@@ -49,7 +57,7 @@ class User extends Authenticatable
     }
 
     public function likes():BelongsToMany{
-        return $this->belongsToMany(Article::class,'likes','user_id','article_id')->withTimestamps();
+        return $this->belongsToMany(Article::class,'likes')->withTimestamps();
     }
 
     public function followers():BelongsToMany{
@@ -58,6 +66,10 @@ class User extends Authenticatable
 
     public function followees():BelongsToMany{
         return $this->belongsToMany(User::class,'follows','follower_id','followee_id')->withTimestamps();
+    }
+
+    public function provider():HasMany{
+        return $this->hasMany(Provider::class);
     }
 
 }

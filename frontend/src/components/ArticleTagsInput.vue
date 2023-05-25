@@ -1,53 +1,21 @@
 <script setup>
 import Vue3TagsInput from "vue3-tags-input";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 const tags = ref([]);
+const emit = defineEmits(['emitInputTags']);
 
-const props = defineProps({
-  inputTags:Object,
-})
-
-// const autocompleteItems = reactive([
-//   {
-//     text: "Spain",
-//   },
-//   {
-//     text: "France",
-//   },
-//   {
-//     text: "USA",
-//   },
-//   {
-//     text: "Germany",
-//   },
-//   {
-//     text: "China",
-//   },
-// ]);
-
-const tagsJson = computed(() => {
-  return JSON.stringify(tags)
-});
-
-// const emit = defineEmits(['inputTags'])
-
-// const inputTags = () => {
-//   emit('inputTags',tags.value);
-// }
+const emitTags = () =>{
+  emit('emitInputTags',tags.value);
+}
 
 </script>
 
 <template>
   <div>
-    <input
-      type="hidden"
-      name="tags"
-      :value="tagsJson"
-      >
       <vue3-tags-input
       :tags="tags"
-      v-model="inputTags.tags"
+      @keydown.enter="emitTags"
       placeholder="タグを5個まで入力できます"
       @on-tags-changed="newTags => tags = newTags"
     />

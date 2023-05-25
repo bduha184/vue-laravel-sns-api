@@ -6,13 +6,13 @@ import router from "../js/router";
 
 const articleData = ref([]);
 
-const submit = async (title, body) => {
+const submit = async (title, body,tags) => {
   const api = axios.create({
     baseURL: "http://localhost:8000",
     withCredentials: true,
   });
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api.post("/api/articles", { title, body}).then((res) => {
+    await api.post("/api/articles", { title, body,tags}).then((res) => {
       if (res.status == 200) {
         router.push("/");
       }
@@ -35,7 +35,7 @@ const submit = async (title, body) => {
                 <button
                   type="button"
                   class="btn blue-gradient btn-block"
-                  @click="submit(articleData.title,articleData.body)"
+                  @click="submit(articleData.title,articleData.body,articleData.tags)"
                   >
                   投稿する
                 </button>

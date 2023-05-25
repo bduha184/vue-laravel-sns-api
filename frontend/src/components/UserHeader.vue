@@ -19,6 +19,7 @@ const userName = route.query.userName;
 const getArticles = computed(() => {
   return articles.getArticles;
 });
+
 const Articles = computed(() => {
   return articles.articles;
 });
@@ -46,7 +47,7 @@ onMounted(() => {
           :to="{
             name: 'user',
             query: {
-              // userName:props.article.user.name,
+              userName:userName,
               userId: userId,
             },
           }"
@@ -71,6 +72,7 @@ onMounted(() => {
             name: 'person',
             query: {
               follow: 'followees',
+              userName:userName,
               userId: userId,
             },
           }"
@@ -83,6 +85,7 @@ onMounted(() => {
             name: 'person',
             query: {
               follow: 'followers',
+              userName:userName,
               userId: userId,
             },
           }"

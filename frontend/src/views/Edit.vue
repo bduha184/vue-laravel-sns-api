@@ -5,28 +5,27 @@ import axios from 'axios';
 import router from '../js/router';
 
 const articleData = ref([]);
-const defaultArticleData = ref([]);
 
 const props = defineProps({
   articleId:Number
 })
 
-// const getArticleData = () => {
-//   fetch(`http://localhost:8000/api/articles/${props.articleId}`)
-//   .then(res=>res.json())
-//   .then(data => defaultArticleData.value = data);
-// }
-
-// onMounted(()=>{
-//   getArticleData();
-// })
-
-const submit = async (title,body) => {
-
   const api = axios.create({
     baseURL:"http://localhost:8000",
     withCredentials:true,
   });
+
+const getArticleData = api.get("/sanctum/csrf-cookie")
+  .then(async (res)=> {
+      await api.get(`/api/articles/${props.articleId}`)
+      .then(res => {
+        if(res.status == 200){
+            router.push('/')
+        }
+      })
+    })
+    
+const submit = async (title,body) => {
   await api.get("/sanctum/csrf-cookie")
   .then(async (res)=> {
       await api.put(`/api/articles/${props.articleId}`,{title,body})

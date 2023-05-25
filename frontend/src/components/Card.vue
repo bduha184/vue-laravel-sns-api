@@ -1,7 +1,7 @@
 <script setup>
 import axios from "axios";
-import {  computed, onMounted, ref } from "vue";
-import { RouterLink, RouterView } from "vue-router";
+import { computed, onMounted, ref } from "vue";
+import { RouterLink } from "vue-router";
 import { getDays } from "../js/common";
 import router from "../js/router";
 import { useAuthStore } from "../js/store/auth";
@@ -12,7 +12,6 @@ const props = defineProps({
 });
 const auth = useAuthStore();
 
-
 const api = axios.create({
   baseURL: "http://localhost:8000",
   withCredentials: true,
@@ -20,15 +19,13 @@ const api = axios.create({
 const destroy = async (id) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.delete(`/api/articles/${id}`).then((res) => {
-      // if (res.status == 200) {
+      if (res.status == 200) {
         router.push("/");
-      // }
+      }
     });
   });
 };
-
 </script>
-
 
 <template>
   <div class="card mt-3">
@@ -37,9 +34,9 @@ const destroy = async (id) => {
         class="text-dark"
         :to="{
           name: 'user',
-          query:{
-            userName:props.article.user.name,
-            userId:props.article.user_id
+          query: {
+            userName: props.article.user.name,
+            userId: props.article.user_id,
           },
         }"
       >
@@ -50,13 +47,13 @@ const destroy = async (id) => {
           class="text-dark"
           :to="{
             name: 'user',
-            query:{
-              userName:props.article.user.name,
-              userId:props.article.user_id
+            query: {
+              userName: props.article.user.name,
+              userId: props.article.user_id,
             },
           }"
         >
-        {{ props.article.user.name }}
+          {{ props.article.user.name }}
         </RouterLink>
         <div class="font-weight-lighter">
           {{ getDays(props.article.created_at) }}
@@ -145,16 +142,21 @@ const destroy = async (id) => {
         <ArticleLike :article="props.article" />
       </div>
     </div>
-    <div class="card-body pt-0 pb-4 pl-3"
-    v-for="tag in props.article.tags"
-    :key="tag.id"
+    <div
+      class="card-body pt-0 pb-4 pl-3 d-flex flex-row"
     >
-        <div class="card-text line-height">
-          <a href="" class="border p-1 mr-1 mt-1 text-muted">
-            #{{ tag.name }}
-          </a>
-        </div>
+      <div class="card-text line-height"
+      v-for="tag in props.article.tags"
+      :key="tag.id"
+      >
+        <RouterLink
+
+        :to="{
+          name:'tag',
+          query:{tagName:tag.name}
+        }"
+        class="border p-1 mr-1 mt-1 text-muted"> #{{ tag.name }} </RouterLink>
       </div>
-    <RouterView />
+    </div>
   </div>
 </template>
