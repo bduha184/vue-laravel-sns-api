@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, computed } from 'vue';
+import { ref,onMounted, computed } from 'vue';
 import { useArticleStore } from '../js/store/articles';
 import Card from '../components/Card.vue'
 

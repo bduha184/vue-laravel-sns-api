@@ -22,14 +22,14 @@ const login = async (email, password) => {
   });
 };
 
-const googleLogin = async () => {
+const googleLogin = async (provider) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api.get("/api/login/google").then((res) => {
-      console.log(res);
+    await api.get(`/api/login/${provider}`).then((res) => {
+      // console.log(res.data)
+      window.location.href = res.data.redirect_url;
     });
   });
 }
-
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const googleLogin = async () => {
             <h2 class="h3 card-title text-center mt-2">ログイン</h2>
             <button
               class="btn btn-block btn-danger"
-              @click.prevent="googleLogin"
+              @click.prevent="googleLogin('google')"
             >
               <i class="fab fa-google mr-1"></i>Googleでログイン
             </button>
