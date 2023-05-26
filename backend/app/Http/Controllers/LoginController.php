@@ -6,7 +6,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
+
 
 use Symfony\Component\HttpFoundation\Response;
 
@@ -46,6 +49,20 @@ class LoginController extends Controller
         return response()->json([
             'redirect_url'=>$redirectUrl,
         ]);
+    }
+
+    public function handleProviderCallback(Request $request,string $provider) {
+        $providerUser = Socialite::driver($provider)->stateless()->user();
+
+        $user = User::where('email', $providerUser->getEmail())->first();
+
+
+        if ($user) {
+                  auth()->login($user);
+                return  response()->json($user);
+            }
+
+
     }
 
 }

@@ -36,6 +36,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::get('/login/{provider}', [LoginController::class, 'redirectToProvider']);
+Route::post('/login/{provider}/callback',[LoginController::class,'handleProviderCallback']);
 
 Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/articles/{id}', [ArticleController::class, 'show']);
