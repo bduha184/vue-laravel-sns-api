@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\Response;
 
 class RegisterController extends Controller
@@ -17,5 +18,22 @@ class RegisterController extends Controller
         ]);
 
         return response()->json( Response::HTTP_OK);
+    }
+
+    public function showProviderUserRegistrationForm(Request $request,string $provider){
+
+        // $providerUser = Socialite::driver($provider)->userFromToken($token);
+
+        // return response()->json([
+        //     'provider' => $provider,
+        //     'email' => $providerUser->getEmail(),
+        //     'token' => $token,
+        // ]);
+        //    return response()->json([
+        //         'res' =>$request,
+        //         'provider' =>$provider,
+
+        // ]);
+
     }
 }

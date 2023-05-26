@@ -8,11 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Response;
 use Laravel\Socialite\Facades\Socialite;
-
-
-use Symfony\Component\HttpFoundation\Response;
-
 class LoginController extends Controller
 {
     //
@@ -36,7 +33,8 @@ class LoginController extends Controller
         return response()->json('User Not Found.', Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
 
         return response()->json(Response::HTTP_OK);
@@ -47,22 +45,34 @@ class LoginController extends Controller
         $redirectUrl =  Socialite::driver($provider)->redirect()->getTargetUrl();
 
         return response()->json([
-            'redirect_url'=>$redirectUrl,
+            'redirect_url' => $redirectUrl,
         ]);
     }
 
-    public function handleProviderCallback(Request $request,string $provider) {
+    public function handleProviderCallback(Request $request, string $provider)
+    {
         $providerUser = Socialite::driver($provider)->stateless()->user();
 
         $user = User::where('email', $providerUser->getEmail())->first();
 
 
         if ($user) {
-                  auth()->login($user);
-                return  response()->json($user);
-            }
+            Auth::login($user);
+            return  response()->json([
+                'user'=>$user,
+            ]);
+        }
 
+        return response()->json([
+            'provider' => $provider,
+            'email' => $providerUser->getEmail(),
+            'token' => $providerUser->token,
+        ]);
 
+        // return redirect()->route('register.{provider}', [
+        //     'provider' => $provider,
+        //     'email' => $providerUser->getEmail(),
+        //     'token' => $providerUser->token,
+        // ]);
     }
-
 }

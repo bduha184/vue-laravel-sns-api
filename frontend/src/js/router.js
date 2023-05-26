@@ -11,6 +11,7 @@ import Person from '../views/person.vue'
 import Tag from '../views/Tags/Show.vue'
 import ResetPassword from '../views/ResetPassword.vue'
 import RedirectAuthGoogle from '../views/Auth/RedirectAuthGoogle.vue'
+import SocialRegister from '../views/Auth/SocialRegister.vue'
 import { useAuthStore } from './store/auth';
 
 
@@ -77,8 +78,13 @@ const router = createRouter({
       path:'/login/google/callback',
       name:'RedirectAuthGoogle',
       component:RedirectAuthGoogle
+    },
+    {
+      path:'/register',
+      name:'SocialRegister',
+      component:SocialRegister,
+      props:true
     }
-
   ]
 })
 
