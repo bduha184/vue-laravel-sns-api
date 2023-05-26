@@ -30,6 +30,9 @@ const sendResetPassword = async(token,email,password,password_confirmation) => {
   });
 }
 
+
+
+
 </script>
 
 <template>
