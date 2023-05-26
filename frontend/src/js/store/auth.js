@@ -5,21 +5,21 @@ export const useAuthStore = defineStore({
   state:()=> ({
     status:false,
     name:'',
-    userId:'',
+    // userId:'',
   }),
   persist: true,
   getters:{
     isLoggedIn:(state)=>({
       name:state.name,
       status:state.status,
-      userId:state.userId
+      // userId:state.userId
     })
   },
   actions:{
-    setUser(status,name,userId) {
+    setUser(status,name) {
       this.status = status;
       this.name = name;
-      this.userId = userId;
+      // this.userId = userId;
     },
     clearUser(){
       this.status = false;

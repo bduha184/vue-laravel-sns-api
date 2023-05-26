@@ -24,8 +24,7 @@ const sendToken = async (provider) => {
         state,
       })
       .then((res) => {
-        console.log(res.data);
-        if (res.data.length == "1") {
+        if (Object.keys(res.data).length == "1") {
           auth.setUser(true, res.data.user.name, res.data.user.id);
           router.push("/");
         } else {

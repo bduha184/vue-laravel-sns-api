@@ -80,7 +80,7 @@ const router = createRouter({
       component:RedirectAuthGoogle
     },
     {
-      path:'/register',
+      path:'/social_register',
       name:'SocialRegister',
       component:SocialRegister,
       props:true

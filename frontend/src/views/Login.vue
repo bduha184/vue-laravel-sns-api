@@ -15,7 +15,7 @@ const login = async (email, password) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.post("/api/login", { email, password }).then((res) => {
       if (res.status == 200) {
-        auth.setUser(true, res.data.name, res.data.id);
+        auth.setUser(true, res.data.name);
         router.push("/");
       }
     });

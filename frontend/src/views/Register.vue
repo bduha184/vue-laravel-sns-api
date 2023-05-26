@@ -20,8 +20,7 @@ const register =  async (name, email, password) => {
       await api.post("/api/register",{name,email,password})
         .then(res=>{
           if(res.status == 200){
-            // console.log(res.data)
-            auth.setUser(true,name,res.data.id);
+            auth.setUser(true,name);
             router.push('/')
 
           }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,20 +21,46 @@ class RegisterController extends Controller
         return response()->json( Response::HTTP_OK);
     }
 
-    public function showProviderUserRegistrationForm(Request $request,string $provider){
+    // public function showProviderUserRegistrationForm(Request $request,string $provider){
 
-        // $providerUser = Socialite::driver($provider)->userFromToken($token);
+    //     // $providerUser = Socialite::driver($provider)->userFromToken($token);
 
-        // return response()->json([
-        //     'provider' => $provider,
-        //     'email' => $providerUser->getEmail(),
-        //     'token' => $token,
-        // ]);
-        //    return response()->json([
-        //         'res' =>$request,
-        //         'provider' =>$provider,
+    //     // return response()->json([
+    //     //     'provider' => $provider,
+    //     //     'email' => $providerUser->getEmail(),
+    //     //     'token' => $token,
+    //     // ]);
+    //     //    return response()->json([
+    //     //         'res' =>$request,
+    //     //         'provider' =>$provider,
 
-        // ]);
+    //     // ]);
 
+    // }
+
+    public function registerProviderUser(Request $request, string $provider)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string', 'alpha_num', 'min:3', 'max:16', 'unique:users'],
+            'token' => ['required', 'string'],
+        ]);
+
+        $token = $request->token;
+
+        $providerUser = Socialite::driver($provider)->userFromToken($token);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $providerUser->getEmail(),
+            'password' => null,
+        ]);
+
+        Auth::login($user, true);
+
+        return response()->json([
+            'user'=>$user
+        ]);
     }
+
 }

@@ -39,6 +39,7 @@ Route::get('/login/{provider}', [LoginController::class, 'redirectToProvider']);
 Route::post('/login/{provider}/callback', [LoginController::class, 'handleProviderCallback']);
 Route::prefix('register')->name('register.')->group(function () {
     Route::get('/{provider}', [RegisterController::class, 'showProviderUserRegistrationForm'])->name('{provider}');
+    Route::post('/{provider}', [RegisterController::class, 'registerProviderUser'])->name('{provider}');
 });
 
 Route::get('/articles', [ArticleController::class, 'index']);
