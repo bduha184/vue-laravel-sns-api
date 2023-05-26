@@ -30,6 +30,19 @@ const register =  async (name, email, password) => {
         })
     })
 }
+
+const api = axios.create({
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
+});
+
+const googleRegister = async (provider) => {
+  await api.get("/sanctum/csrf-cookie").then(async (res) => {
+    await api.get(`/api/login/${provider}`).then((res) => {
+      window.location.href = res.data.redirect_url;
+    });
+  });
+}
 </script>
 <template>
   <div class="container">
@@ -39,7 +52,12 @@ const register =  async (name, email, password) => {
         <div class="card mt-3">
           <div class="card-body text-center">
             <h2 class="h3 card-title text-center mt-2">ユーザー登録</h2>
-
+            <button
+              class="btn btn-block btn-danger"
+              @click.prevent="googleRegister('google')"
+            >
+              <i class="fab fa-google mr-1"></i>Googleで登録
+            </button>
             <div class="card-text">
               <form method="POST">
                 <div class="md-form">

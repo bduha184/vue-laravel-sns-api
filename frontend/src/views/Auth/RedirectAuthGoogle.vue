@@ -25,7 +25,7 @@ const sendToken = async (provider) => {
       })
       .then((res) => {
         if (Object.keys(res.data).length == "1") {
-          auth.setUser(true, res.data.user.name, res.data.user.id);
+          auth.setUser(true, res.data.user.name);
           router.push("/");
         } else {
           router.push({

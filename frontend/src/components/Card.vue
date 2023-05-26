@@ -59,6 +59,8 @@ const destroy = async (id) => {
           {{ getDays(props.article.created_at) }}
         </div>
       </div>
+      {{ auth.isLoggedIn.status }}
+      {{ auth.isLoggedIn.userId }}
       <div
         class="ml-auto card-text"
         v-if="
