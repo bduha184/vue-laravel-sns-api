@@ -32,23 +32,26 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/articles/{id}/unlike', [ArticleController::class, 'unlike']);
 });
 Route::post('/register', [RegisterController::class, 'register']);
-Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/login/{provider}', [LoginController::class, 'redirectToProvider']);
-Route::post('/login/{provider}/callback', [LoginController::class, 'handleProviderCallback']);
+Route::prefix('login')->name('login.')->group(function() {
+    Route::post('/', [LoginController::class, 'login']);
+    Route::get('/{provider}', [LoginController::class, 'redirectToProvider'])->name('{provider}');
+    Route::post('/{provider}/callback', [LoginController::class, 'handleProviderCallback'])->name('{provider}/callback');
+});
+
 Route::prefix('register')->name('register.')->group(function () {
     Route::get('/{provider}', [RegisterController::class, 'showProviderUserRegistrationForm'])->name('{provider}');
     Route::post('/{provider}', [RegisterController::class, 'registerProviderUser'])->name('{provider}');
 });
 
 Route::get('/articles', [ArticleController::class, 'index']);
-Route::get('/articles/{id}', [ArticleController::class, 'show']);
+// Route::get('/articles/{id}', [ArticleController::class, 'show']);
 Route::get('/articles/{id}/likes', [ArticleController::class, 'likes']);
 
 Route::get('/users', [UserController::class, 'show']);
-Route::get('/user/{id}/followers', [UserController::class, 'followers']);
-Route::get('/user/{id}/followees', [UserController::class, 'followees']);
+Route::get('/user/{name}/followers', [UserController::class, 'followers']);
+Route::get('/user/{name}/followees', [UserController::class, 'followees']);
 Route::get('/user/{id}/likes', [UserController::class, 'likes']);
 
 Route::get('/tags/{name}', [TagController::class, 'show']);

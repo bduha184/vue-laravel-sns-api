@@ -13,9 +13,7 @@ const submit = async (title, body,tags) => {
   });
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.post("/api/articles", { title, body,tags}).then((res) => {
-      if (res.status == 200) {
         router.push("/");
-      }
     });
   });
 }

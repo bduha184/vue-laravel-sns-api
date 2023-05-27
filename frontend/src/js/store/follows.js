@@ -22,15 +22,15 @@ export const useFollowStore = defineStore({
     setFollowStatus(status) {
       this.status = status;
     },
-    async fetchFollowers(userId) {
+    async fetchFollowers(userName) {
       const api = axios.create({
         baseURL: "http://localhost:8000",
         withCredentials: true,
       });
       await api.get("/sanctum/csrf-cookie").then(async (res) => {
-        await api.get(`/api/user/${userId}/followers`)
+        await api.get(`/api/user/${userName}/followers`)
           .then((res) => {
-            if (res.status == 200) {
+            if (res.data != 404) {
               const followers = res.data.followers;
               this.followers = followers;
               this.followerCount = Object.keys(followers).length;
@@ -41,15 +41,15 @@ export const useFollowStore = defineStore({
           });
       });
     },
-    async fetchFollowees(userId) {
+    async fetchFollowees(userName) {
       const api = axios.create({
         baseURL: "http://localhost:8000",
         withCredentials: true,
       });
       await api.get("/sanctum/csrf-cookie").then(async (res) => {
-        await api.get(`/api/user/${userId}/followees`)
+        await api.get(`/api/user/${userName}/followees`)
           .then((res) => {
-            if (res.status == 200) {
+            if (res.data != 404) {
               const followees = res.data.followees;
               this.followees= followees;
               this.followeeCount = Object.keys(followees).length;

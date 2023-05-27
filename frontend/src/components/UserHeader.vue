@@ -13,7 +13,6 @@ const auth = useAuthStore();
 const articles = useArticleStore();
 
 const route = useRoute();
-const userId = route.query.userId;
 const userName = route.query.userName;
 
 const getArticles = computed(() => {
@@ -33,8 +32,8 @@ const getFollowees = computed(() => {
 });
 
 onMounted(() => {
-  follows.fetchFollowees(userId);
-  follows.fetchFollowers(userId);
+  follows.fetchFollowees(userName);
+  follows.fetchFollowers(userName);
   articles.fetchArticles();
 });
 </script>
@@ -48,7 +47,6 @@ onMounted(() => {
             name: 'user',
             query: {
               userName:userName,
-              userId: userId,
             },
           }"
           class="text-dark"
@@ -56,7 +54,7 @@ onMounted(() => {
           <i class="fas fa-user-circle fa-3x"></i>
         </RouterLink>
         <FollowButton
-          v-if="auth.isLoggedIn.status && auth.isLoggedIn.userId != userId"
+          v-if="auth.isLoggedIn.status && auth.isLoggedIn.name != userName"
         />
       </div>
       <h2 class="h5 card-title m-0">
@@ -73,7 +71,6 @@ onMounted(() => {
             query: {
               follow: 'followees',
               userName:userName,
-              userId: userId,
             },
           }"
           class="text-muted"
@@ -86,7 +83,6 @@ onMounted(() => {
             query: {
               follow: 'followers',
               userName:userName,
-              userId: userId,
             },
           }"
           class="text-muted"

@@ -1,5 +1,5 @@
 <script setup>
-import { ref,onMounted, computed } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useArticleStore } from '../js/store/articles';
 import Card from '../components/Card.vue'
 
@@ -10,6 +10,7 @@ const getArticles = computed(()=> {
 const Articles = computed(()=>{
   return articles.articles
 })
+
 onMounted(()=> {
   articles.fetchArticles();
 })

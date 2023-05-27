@@ -26,26 +26,33 @@ class UserController extends Controller
         ];
     }
 
-    public function followers($id)
+    public function followers(string $name)
     {
-        $user = User::where('id', $id)->first();
-        $followers = $user->followers->sortByDesc('created_at');
+        $user = User::where('name', $name)->first();
+        if($user){
+            $followers = $user->followers->sortByDesc('created_at');
+            return response()->json([
+                'followers' => $followers
+            ],Response::HTTP_OK);
+        }
 
-        return [
-            'user' => $user,
-            'followers' => $followers
-        ];
+        return response()->json(Response::HTTP_NOT_FOUND);
+
     }
 
-    public function followees($id)
+    public function followees(string $name)
     {
-        $user = User::where('id', $id)->first();
-        $followees = $user->followees->sortByDesc('created_at');
+        $user = User::where('name', $name)->first();
 
-        return [
-            'user' => $user,
-            'followees' => $followees
-        ];
+        if($user){
+            $followees = $user->followees->sortByDesc('created_at');
+
+            return response()->json([
+                'followees' => $followees
+            ],Response::HTTP_OK);
+        }
+
+        return response()->json(Response::HTTP_NOT_FOUND);
     }
 
     public function follow(Request $request, $id)

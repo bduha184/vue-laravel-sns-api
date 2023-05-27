@@ -17,15 +17,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return Article::latest()->with('user')->with('tags')->with('likes')->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Article::latest()->with(['user','tags','likes'])->get();
     }
 
     /**
@@ -53,17 +45,10 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Article $article ,$id)
-    {
-        return $article->where('id',$id)->with('user')->with('likes')->with('tags')->first();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Article $article)
-    {
-    }
+    // public function show(Article $article ,$id)
+    // {
+    //     return $article->where('id',$id)->with(['user','tags','likes'])->first();
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -106,18 +91,4 @@ class ArticleController extends Controller
         $article->detach($request->user()->id);
         $article->attach($request->user()->id);
     }
-
-    // public function likes($id){
-    //     $user = User::where('id',$id)->first();
-
-    //     // $articles =Article::where('id',$user->likes)->latest()->get();
-
-    //     $test = $user->likes;
-
-    //     return [
-    //         // 'user'=>$user,
-    //         // 'articles'=>$articles,
-    //         'test'=>$test
-    //     ];
-    // }
 }

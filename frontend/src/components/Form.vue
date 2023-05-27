@@ -5,6 +5,7 @@ const props = defineProps({
   articleData:Object,
 });
 
+console.log(props.articleData)
 
 const emitTags = (tags) =>{
   props.articleData.tags = tags;

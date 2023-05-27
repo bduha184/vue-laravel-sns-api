@@ -1,51 +1,25 @@
 <script setup>
-import { reactive,onMounted } from 'vue';
-import Card from '../components/Card.vue'
-import axios from 'axios';
+import { ref, computed } from 'vue';
+import Card from '../components/Card.vue';
+import { useArticleStore } from '../js/store/articles';
+
 const props = defineProps({
   articleId:Number
 })
 
-const article = reactive({
-  id:Number,
-  title:String,
-  body:String,
-  created_at:Number,
-  user:Object,
-  tags:Object
-})
+const articlesStore = useArticleStore();
+const articles = articlesStore.getArticles;
 
-const getArticle =  async () => {
+const article = ref();
 
-const api = axios.create({
-  baseURL:"http://localhost:8000",
-  withCredentials:true,
-})
-await api.get("/sanctum/csrf-cookie")
-  .then(async (res) => {
-    await api.get(`/api/articles/${props.articleId}`)
-      .then(res=>{
-        article.id = res.data.id;
-        article.title = res.data.title;
-        article.body = res.data.body;
-        article.created_at = res.data.created_at;
-        article.user = res.data.user;
-        article.tags = res.data.tags;
-      })
-      .catch(error=>{
-        console.log(error);
-      })
-  })
-}
-
-onMounted(()=> {
-  getArticle();
+const showArticle = computed(() => {
+  return article.value = articles.find(article => article.id == props.articleId)
 })
 
 </script>
 
 <template>
  <div class="container">
-    <Card :article="article"/>
+    <Card :article="showArticle"/>
   </div>
 </template>

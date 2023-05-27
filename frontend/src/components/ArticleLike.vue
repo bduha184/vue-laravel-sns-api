@@ -31,24 +31,24 @@ const switchIsLikedBy = async () => {
   }
 }
 
-const getCountLikes = async () => {
-  await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api.get(`/api/articles/${props.article.id}`).then((res) => {
-      if (res.data.likes) {
-        const likes = res.data.likes;
-        likes.forEach((like) => {
-          if (auth.isLoggedIn.status && auth.isLoggedIn.userId === like.id) {
-            isLikedBy.value = true;
-          }
-        });
-        countLikes.value = res.data.likes.length;
-      }
-    });
-  });
-};
-onMounted(() => {
-  getCountLikes();
-});
+// const getCountLikes = async () => {
+//   await api.get("/sanctum/csrf-cookie").then(async (res) => {
+//     await api.get(`/api/articles/${props.article.id}`).then((res) => {
+//       if (res.data.likes) {
+//         const likes = res.data.likes;
+//         likes.forEach((like) => {
+//           if (auth.isLoggedIn.status && auth.isLoggedIn.userId === like.id) {
+//             isLikedBy.value = true;
+//           }
+//         });
+//         countLikes.value = res.data.likes.length;
+//       }
+//     });
+//   });
+// };
+// onMounted(() => {
+//   getCountLikes();
+// });
   </script>
 <template>
   <div>
@@ -66,7 +66,7 @@ onMounted(() => {
       />
     </button>
     <span>
-      {{ countLikes }}
+      <!-- {{ countLikes }} -->
     </span>
   </div>
 </template>

@@ -1,30 +1,17 @@
 <script setup>
 import axios from "axios";
-import { computed, onMounted, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { getDays } from "../js/common";
 import router from "../js/router";
 import { useAuthStore } from "../js/store/auth";
 import ArticleLike from "./ArticleLike.vue";
+import CardStatus from "./CardStatus.vue";
 
 const props = defineProps({
   article: Object,
 });
-const auth = useAuthStore();
 
-const api = axios.create({
-  baseURL: "http://localhost:8000",
-  withCredentials: true,
-});
-const destroy = async (id) => {
-  await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api.delete(`/api/articles/${id}`).then((res) => {
-      if (res.status == 200) {
-        router.push("/");
-      }
-    });
-  });
-};
+
 </script>
 
 <template>
@@ -59,72 +46,7 @@ const destroy = async (id) => {
           {{ getDays(props.article.created_at) }}
         </div>
       </div>
-      {{ auth.isLoggedIn.status }}
-      {{ auth.isLoggedIn.userId }}
-      <div
-        class="ml-auto card-text"
-        v-if="
-          auth.isLoggedIn.status &&
-          auth.isLoggedIn.userId === props.article.user_id
-        "
-      >
-        <div class="dropdown">
-          <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-v"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right">
-            <RouterLink
-              :to="`/articles/${props.article.id}/edit`"
-              class="dropdown-item"
-            >
-              <i class="fas fa-pen mr-1"></i>記事を更新する
-            </RouterLink>
-            <div class="dropdown-divider"></div>
-            <a
-              class="dropdown-item text-danger"
-              data-toggle="modal"
-              :data-target="`#modal-delete-${props.article.id}`"
-            >
-              <i class="fas fa-trash-alt mr-1"></i>記事を削除する
-            </a>
-          </div>
-        </div>
-      </div>
-      <div
-        :id="`modal-delete-${props.article.id}`"
-        class="modal fade"
-        tabindex="-1"
-        role="dialog"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="閉じる"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form method="POST">
-              <div class="modal-body">を削除します。よろしいですか？</div>
-              <div class="modal-footer justify-content-between">
-                <a class="btn btn-outline-grey" data-dismiss="modal"
-                  >キャンセル</a
-                >
-                <button
-                  class="btn btn-danger"
-                  @click.prevent="destroy(props.article.id)"
-                >
-                  削除する
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+      <CardStatus :article="article"/>
     </div>
     <div class="card-body pt-0">
       <h3 class="h4 card-title">

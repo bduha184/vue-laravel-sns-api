@@ -3,7 +3,9 @@ import { ref, onMounted, computed } from "vue";
 import {useRoute } from "vue-router";
 import router from "../js/router";
 import axios from "axios";
+import { useAuthStore } from "../js/store/auth";
 
+const auth = useAuthStore();
 const route = useRoute();
 
 const mailAlert = ref('')
@@ -25,7 +27,9 @@ const sendResetPassword = async(token,email,password,password_confirmation) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.post('/reset-password',{token,email,password,password_confirmation}).then((res) => {
      mailAlert.value = res.data.status;
-     router.push('/');
+     console.log(res.data);
+    //  auth.setUser(true,res.data.)
+    //  router.push('/');
     });
   });
 }
