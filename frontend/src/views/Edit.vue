@@ -1,6 +1,6 @@
 <script setup>
 import Form from "../components/Form.vue";
-import { ref,reactive, onMounted, compile, computed } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import router from "../js/router";
 import { useArticleStore } from "../js/store/articles";
@@ -11,22 +11,29 @@ const props = defineProps({
 });
 const articlesStore = useArticleStore();
 const articles = articlesStore.getArticles;
-const articleData = ref({})
-const getArticle = computed(()=> {
-  return articles.find(article => article.id == props.articleId)
-})
 
-console.log(getArticle);
+const articleData = ref([])
+const getArticle = ()=> {
+ const targetArticle = articles.find(article => article.id == props.articleId)
+
+ articleData.value.title = targetArticle.title;
+ articleData.value.tags = targetArticle.tags;
+ articleData.value.body = targetArticle.body;
+}
+
+onMounted(()=>{
+  getArticle();
+})
 
 const api = axios.create({
   baseURL: "http://localhost:8000",
   withCredentials: true,
 });
 
-const submit = async (title, body) => {
+const submit = async (title, tags,body) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api
-      .put(`/api/articles/${props.articleId}`, { title, body })
+      .put(`/api/articles/${props.articleId}`, { title,tags, body })
       .then((res) => {
         if (res.status == 200) {
           router.push("/");
@@ -48,7 +55,7 @@ const submit = async (title, body) => {
                 <button
                   type="button"
                   class="btn blue-gradient btn-block"
-                  @click="submit(articleData.title, articleData.body)"
+                  @click="submit(articleData.title, articleData.tags,articleData.body)"
                 >
                   更新する
                 </button>

@@ -7,9 +7,6 @@ const articles = useArticleStore();
 const getArticles = computed(()=> {
   return articles.getArticles;
 })
-const Articles = computed(()=>{
-  return articles.articles
-})
 
 onMounted(()=> {
   articles.fetchArticles();

@@ -23,8 +23,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::put('/user/{id}/follow', [UserController::class, 'follow']);
-    Route::delete('/user/{id}/follow', [UserController::class, 'unfollow']);
+    Route::put('/user/{name}/follow', [UserController::class, 'follow']);
+    Route::delete('/user/{name}/follow', [UserController::class, 'unfollow']);
     Route::post('/articles', [ArticleController::class, 'store']);
     Route::put('/articles/{id}', [ArticleController::class, 'update']);
     Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);

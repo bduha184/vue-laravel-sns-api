@@ -27,9 +27,7 @@ const sendResetPassword = async(token,email,password,password_confirmation) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.post('/reset-password',{token,email,password,password_confirmation}).then((res) => {
      mailAlert.value = res.data.status;
-     console.log(res.data);
-    //  auth.setUser(true,res.data.)
-    //  router.push('/');
+     router.push('/login');
     });
   });
 }

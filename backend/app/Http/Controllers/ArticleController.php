@@ -88,7 +88,15 @@ class ArticleController extends Controller
     public function like(Request $request,$id){
 
         $article = Article::find($id)->likes();
-        $article->detach($request->user()->id);
-        $article->attach($request->user()->id);
+
+        if($article){
+            $article->detach($request->user()->id);
+            $article->attach($request->user()->id);
+            return response()->json(Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'message' => 'Article not found'
+        ], Response::HTTP_NOT_FOUND);
     }
 }

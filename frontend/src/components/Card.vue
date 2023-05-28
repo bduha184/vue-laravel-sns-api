@@ -1,11 +1,9 @@
 <script setup>
-import axios from "axios";
 import { RouterLink } from "vue-router";
 import { getDays } from "../js/common";
-import router from "../js/router";
-import { useAuthStore } from "../js/store/auth";
 import ArticleLike from "./ArticleLike.vue";
 import CardStatus from "./CardStatus.vue";
+import Tags from "./Tags.vue";
 
 const props = defineProps({
   article: Object,
@@ -23,7 +21,6 @@ const props = defineProps({
           name: 'user',
           query: {
             userName: props.article.user.name,
-            userId: props.article.user_id,
           },
         }"
       >
@@ -36,7 +33,6 @@ const props = defineProps({
             name: 'user',
             query: {
               userName: props.article.user.name,
-              userId: props.article.user_id,
             },
           }"
         >
@@ -66,21 +62,6 @@ const props = defineProps({
         <ArticleLike :article="props.article" />
       </div>
     </div>
-    <div
-      class="card-body pt-0 pb-4 pl-3 d-flex flex-row"
-    >
-      <div class="card-text line-height"
-      v-for="tag in props.article.tags"
-      :key="tag.id"
-      >
-        <RouterLink
-
-        :to="{
-          name:'tag',
-          query:{tagName:tag.name}
-        }"
-        class="border p-1 mr-1 mt-1 text-muted"> #{{ tag.name }} </RouterLink>
-      </div>
-    </div>
+    <Tags :tags="props.article.tags"/>
   </div>
 </template>

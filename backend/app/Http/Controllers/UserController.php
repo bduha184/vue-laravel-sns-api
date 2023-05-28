@@ -55,40 +55,37 @@ class UserController extends Controller
         return response()->json(Response::HTTP_NOT_FOUND);
     }
 
-    public function follow(Request $request, $id)
+    public function follow(Request $request,string $name)
     {
-        $user = User::where('id', $id)->first();
-
-        // if($user->id === $request->user()->id){
-        //     return abort('404', 'Cannot follow yourself.');
-        // }
+        $user = User::where('name', $name)->first();
 
         $request->user()->followees()->detach($user);
         $request->user()->followees()->attach($user);
 
-        return ['id' => $id];
+        return ['name' => $name];
     }
-
-    public function unfollow(Request $request, $id)
+    public function unfollow(Request $request,string $name)
     {
-        $user = User::where('name', $id)->first();
+        $user = User::where('name', $name)->first();
 
         $request->user()->followees()->detach($user);
 
-        return ['id' => $id];
+        return ['name' => $name];
     }
 
     public function likes($id)
     {
         $user = User::where('id', $id)->first();
-        $likes_articles = $user->likes->all();
-        $articleArray = [];
+        if($user){
+            $likes_articles = $user->likes->all();
+            $articleArray = [];
 
-        foreach ($likes_articles as $likes_article) {
-            $article = Article::where('id', $likes_article->id)->with('user')->get();
-            array_push($articleArray, $article);
+            foreach ($likes_articles as $likes_article) {
+                $article = Article::where('id', $likes_article->id)->with('user')->get();
+                array_push($articleArray, $article);
+            }
+            return $articleArray;
         }
-
-        return $articleArray;
+        return response()->json(Response::HTTP_NOT_FOUND);
     }
 }
