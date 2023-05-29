@@ -1,7 +1,6 @@
 <script setup>
 import axios from "axios";
 import { ref } from "vue";
-import router from "../js/router";
 
 const mailAlert = ref('');
 const email = ref('')

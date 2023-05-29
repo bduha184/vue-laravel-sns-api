@@ -1,12 +1,17 @@
 <script setup>
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { useArticleStore } from "../js/store/articles";
 import { useAuthStore } from "../js/store/auth";
+
 const props = defineProps({
   article: Object,
 });
+
+const articlesStore = useArticleStore();
 const auth = useAuthStore();
-let isLoggedIn = auth.isLoggedIn.status;
+const isLoggedIn = auth.isLoggedIn.status;
+const authUser = auth.isLoggedIn.name;
 const countLikes = ref(0);
 const api = axios.create({
   baseURL: "http://localhost:8000",
@@ -16,40 +21,38 @@ const initialIsLikedBy = ref(false);
 const isLikedBy = ref(false);
 
 const switchIsLikedBy = async () => {
-  if (isLoggedIn && auth.isLoggedIn.userId !== props.article.user.id) {
+  if (isLoggedIn && authUser != props.article.user.name) {
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
       await api.put(`/api/articles/${props.article.id}/like`).then((res) => {
-        console.log(res.data);
+        isLikedBy.value = true;
       });
     });
-    if (!isLikedBy.value) {
+    if (isLikedBy.value) {
       initialIsLikedBy.value = true;
     } else {
       initialIsLikedBy.value = false;
     }
-    isLikedBy.value = true;
   }
-}
-
-const getCountLikes = async () => {
-  await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api.get(`/api/articles/${props.article.id}`).then((res) => {
-      if (res.data.likes) {
-        const likes = res.data.likes;
-        likes.forEach((like) => {
-          if (auth.isLoggedIn.status && auth.isLoggedIn.userId === like.id) {
-            isLikedBy.value = true;
-          }
-        });
-        countLikes.value = res.data.likes.length;
-      }
-    });
-  });
 };
-onMounted(() => {
-  getCountLikes();
+
+const getCountLikes = computed(() => {
+  const article = articlesStore.getArticles.find(
+    (article) => article.id == props.article.id
+  );
+  return (countLikes.value = Object.keys(article.likes).length);
 });
-  </script>
+const authLikesArticles = computed(() => {
+  const articles = articlesStore.getArticles;
+  const likeArticles = articles.flatMap((article) => {
+    return article.likes.filter((like) => like.name == auth.isLoggedIn.name);
+  });
+ return likeArticles.forEach((like) => {
+    if (auth.isLoggedIn.status && like.pivot.article_id == props.article.id) {
+      isLikedBy.value = true;
+    }
+  });
+});
+</script>
 <template>
   <div>
     <button
@@ -60,13 +63,13 @@ onMounted(() => {
       <i
         class="fas fa-heart mr-1"
         :class="{
-          'red-text ': isLikedBy,
+          'red-text ': authLikesArticles || isLikedBy,
           'animated heartBeat fast': initialIsLikedBy,
         }"
       />
     </button>
     <span>
-      {{ countLikes }}
+      {{ getCountLikes }}
     </span>
   </div>
 </template>

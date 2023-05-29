@@ -1,19 +1,13 @@
 <script setup>
 import axios from "axios";
-import { computed, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useFollowStore } from "../js/store/follows";
-import { useAuthStore } from "../js/store/auth";
 import { useRoute } from "vue-router";
 
 
 const route = useRoute();
+const routeUserName = route.query.userName;
 const follow = useFollowStore();
-const auth = useAuthStore();
-
-const api = axios.create({
-  baseURL: "http://localhost:8000",
-  withCredentials: true,
-});
 
 const isFollowedBy = ref(follow.isFollowedBy);
 
@@ -25,8 +19,14 @@ const buttonIcon = computed(() => {
   return isFollowedBy.value ? "fas fa-user-check" : "fas fa-user-plus";
 });
 
+
 const buttonText = computed(() => {
   return isFollowedBy.value ? "フォロー中" : "フォロー";
+});
+
+const api = axios.create({
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
 });
 
 const changeFollowStatus = async () => {
@@ -35,23 +35,21 @@ const changeFollowStatus = async () => {
 
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
       await api
-        .put(`/api/user/${route.query.userId}/follow`)
+        .put(`/api/user/${routeUserName}/follow`)
         .then((res) => {
-          if (res.status == 200) {
-            console.log(res);
-          }
+          console.log(res);
         })
         .catch((error) => {
           console.log(error);
         });
     });
 
-    return (isFollowedBy.value = true);
+    return isFollowedBy.value = true;
   } else {
     follow.setFollowStatus(false);
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
       await api
-        .delete(`/api/user/${route.query.userId}/follow`)
+        .delete(`/api/user/${routeUserName}/follow`)
         .then((res) => {
           if (res.status == 200) {
             console.log(res);
@@ -62,16 +60,15 @@ const changeFollowStatus = async () => {
         });
     });
 
-    return (isFollowedBy.value = false);
+    return isFollowedBy.value = false;
   }
 };
-
 
 </script>
 <template>
   <div class="ml-auto">
     <button
-      class="btn-sm shadow-none border border-primary p-2"
+      class="btn-sm shadow-none border border-dark p-2"
       :class="buttonColor"
       @click="changeFollowStatus"
     >
