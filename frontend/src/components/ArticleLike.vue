@@ -24,11 +24,10 @@ const switchIsLikedBy = async () => {
   if (isLoggedIn && authUser != props.article.user.name) {
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
       await api.put(`/api/articles/${props.article.id}/like`).then((res) => {
-        console.log(res.data);
+        isLikedBy.value = true;
       });
     });
-    isLikedBy.value = true;
-    if (!isLikedBy.value) {
+    if (isLikedBy.value) {
       initialIsLikedBy.value = true;
     } else {
       initialIsLikedBy.value = false;
@@ -42,14 +41,13 @@ const getCountLikes = computed(() => {
   );
   return (countLikes.value = Object.keys(article.likes).length);
 });
-
 const authLikesArticles = computed(() => {
   const articles = articlesStore.getArticles;
   const likeArticles = articles.flatMap((article) => {
     return article.likes.filter((like) => like.name == auth.isLoggedIn.name);
   });
  return likeArticles.forEach((like) => {
-    if (like.pivot.article_id == props.article.id) {
+    if (auth.isLoggedIn.status && like.pivot.article_id == props.article.id) {
       isLikedBy.value = true;
     }
   });

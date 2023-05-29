@@ -13,7 +13,6 @@ const getArticles = computed(() => {
   return articles.getArticles;
 });
 
-
 const tabSelect = reactive({
   userArticles: true,
   likesArticles: false,
@@ -28,22 +27,35 @@ const showLikesArticles = () => {
   tabSelect.userArticles = false;
 };
 
+const getLikeArticles = computed(() => {
+  const articles = getArticles.value;
+  const likeArticlesId = articles.flatMap((article) => {
+    return article.likes.map((like) => {
+      if(like.name == userName){
+        return like.pivot.article_id
+      }
+    });
+  });
+  return articles.filter((article)=>{
+    for(let likeId of likeArticlesId){
+      if(likeId == article.id){
+        return article;
+      }
+    }
+  });
+
+});
 
 const switchArticles = computed(() => {
   if (tabSelect.userArticles) {
     return getArticles.value.filter((article) => article.user.name == userName);
   }
   if (tabSelect.likesArticles) {
-    const articles = getArticles.value;
-    const likeArticles = articles.map((article) => {
-      return article.likes.filter((like) => like.name == userName);
-    });
-
-    return likeArticles.flat();
+    return getLikeArticles.value
   }
 });
 
-console.log(getArticles.value)
+
 </script>
 
 <template>
@@ -69,7 +81,6 @@ console.log(getArticles.value)
         </button>
       </li>
     </ul>
-    {{ switchArticles }}
     <div v-for="article in switchArticles" :key="article.id">
       <Card :article="article" />
     </div>
