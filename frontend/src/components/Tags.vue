@@ -3,7 +3,6 @@ import { RouterLink } from "vue-router"
 const props = defineProps({
   tags:Object
 })
-
 </script>
 
 <template>

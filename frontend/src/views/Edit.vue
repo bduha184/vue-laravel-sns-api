@@ -1,10 +1,10 @@
 <script setup>
 import Form from "../components/Form.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import router from "../js/router";
 import { useArticleStore } from "../js/store/articles";
-
+import { useTagsStore } from "../js/store/tags";
 
 const props = defineProps({
   articleId: Number,
@@ -12,18 +12,25 @@ const props = defineProps({
 const articlesStore = useArticleStore();
 const articles = articlesStore.getArticles;
 
-const articleData = ref([])
-const getArticle = ()=> {
- const targetArticle = articles.find(article => article.id == props.articleId)
+const articleData = ref({})
+const getArticle = computed(()=> {
+ return articles.find(article => article.id == props.articleId)
+})
 
- articleData.value.title = targetArticle.title;
- articleData.value.tags = targetArticle.tags;
- articleData.value.body = targetArticle.body;
+const getArticleContents = ()=>{
+  const tagsObject = getArticle.value.tags;
+  const tags = tagsObject.map(
+    tag=>tag.name
+    )
+  articleData.value.title = getArticle.value.title;
+  articleData.value.body = getArticle.value.body;
+  articleData.value.tags = tags;
 }
 
 onMounted(()=>{
-  getArticle();
+  getArticleContents();
 })
+
 
 const api = axios.create({
   baseURL: "http://localhost:8000",
@@ -35,9 +42,10 @@ const submit = async (title, tags,body) => {
     await api
       .put(`/api/articles/${props.articleId}`, { title,tags, body })
       .then((res) => {
-        if (res.status == 200) {
-          router.push("/");
-        }
+        console.log(res.data)
+        // if (res.status == 200) {
+        //   router.push("/");
+        // }
       });
   });
 };
@@ -51,6 +59,7 @@ const submit = async (title, tags,body) => {
           <div class="card-body pt-0">
             <div class="card-text">
               <form method="">
+                {{ articleData.tags }}
                 <Form :articleData="articleData" />
                 <button
                   type="button"

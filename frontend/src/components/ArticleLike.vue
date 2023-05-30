@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useArticleStore } from "../js/store/articles";
 import { useAuthStore } from "../js/store/auth";
 
@@ -13,12 +13,14 @@ const auth = useAuthStore();
 const isLoggedIn = auth.isLoggedIn.status;
 const authUser = auth.isLoggedIn.name;
 const countLikes = ref(0);
+
+const initialIsLikedBy = ref(false);
+const isLikedBy = ref(false);
+
 const api = axios.create({
   baseURL: "http://localhost:8000",
   withCredentials: true,
 });
-const initialIsLikedBy = ref(false);
-const isLikedBy = ref(false);
 
 const switchIsLikedBy = async () => {
   if (isLoggedIn && authUser != props.article.user.name) {

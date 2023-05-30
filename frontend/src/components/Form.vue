@@ -1,9 +1,9 @@
 <script setup>
 import ArticleTagsInput from './ArticleTagsInput.vue';
+
 const props = defineProps({
   articleData:Object,
 });
-
 
 const emitTags = (tags) =>{
   return props.articleData.tags = tags;
@@ -21,6 +21,7 @@ const emitTags = (tags) =>{
   <div class="form-group">
     <ArticleTagsInput
     v-model="articleData.tags"
+    :articleData="articleData"
     @emitInputTags="emitTags"
     />
   </div>
