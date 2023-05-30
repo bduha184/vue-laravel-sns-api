@@ -13,7 +13,8 @@ const submit = async (title, body,tags) => {
   });
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.post("/api/articles", { title, body,tags}).then((res) => {
-        router.push("/");
+      console.log(res.data);
+        // router.push("/");
     });
   });
 }
@@ -30,6 +31,7 @@ const submit = async (title, body,tags) => {
             <div class="card-text">
               <form method="POST">
                 <Form :articleData="articleData" />
+                {{ articleData.tags }}
                 <button
                   type="button"
                   class="btn blue-gradient btn-block"
