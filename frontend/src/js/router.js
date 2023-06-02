@@ -21,7 +21,7 @@ const router = createRouter({
     {
       path: '/',
       name:'index',
-      component: Index
+      component: Index,
     },
     {
       path: '/articles/:articleId',

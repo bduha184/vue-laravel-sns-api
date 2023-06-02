@@ -27,6 +27,8 @@ const switchIsLikedBy = async () => {
     await api.get("/sanctum/csrf-cookie").then(async (res) => {
       await api.put(`/api/articles/${props.article.id}/like`).then((res) => {
         isLikedBy.value = true;
+        window.location.href="/";
+
       });
     });
     if (isLikedBy.value) {
@@ -41,7 +43,7 @@ const getCountLikes = computed(() => {
   const article = articlesStore.getArticles.find(
     (article) => article.id == props.article.id
   );
-  return (countLikes.value = Object.keys(article.likes).length);
+  return countLikes.value = Object.keys(article.likes).length;
 });
 const authLikesArticles = computed(() => {
   const articles = articlesStore.getArticles;

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, computed, reactive } from "vue";
+import { onMounted, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useFollowStore } from "../js/store/follows";
 import FollowCard from '../components/FollowCard.vue'

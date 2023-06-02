@@ -42,10 +42,9 @@ const submit = async (title, tags,body) => {
     await api
       .put(`/api/articles/${props.articleId}`, { title,tags, body })
       .then((res) => {
-        console.log(res.data)
-        // if (res.status == 200) {
-        //   router.push("/");
-        // }
+        if (res.status != 404) {
+          router.push("/");
+        }
       });
   });
 };

@@ -16,9 +16,11 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($page)
     {
-        return Article::latest()->with(['user', 'tags', 'likes'])->get();
+        // return response($page);
+        return Article::latest()->with(['user', 'tags', 'likes'])->take($page*10)->get();
+        // return Article::latest()->with(['user', 'tags', 'likes'])->get();
     }
 
     /**

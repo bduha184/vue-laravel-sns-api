@@ -45,7 +45,7 @@ Route::prefix('register')->name('register.')->group(function () {
     Route::post('/{provider}', [RegisterController::class, 'registerProviderUser'])->name('{provider}');
 });
 
-Route::get('/articles', [ArticleController::class, 'index']);
+Route::get('/articles/{page}', [ArticleController::class, 'index']);
 // Route::get('/articles/{id}', [ArticleController::class, 'show']);
 Route::get('/articles/{id}/likes', [ArticleController::class, 'likes']);
 

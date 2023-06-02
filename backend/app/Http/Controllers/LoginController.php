@@ -68,11 +68,5 @@ class LoginController extends Controller
             'email' => $providerUser->getEmail(),
             'token' => $providerUser->token,
         ]);
-
-        // return redirect()->route('register.{provider}', [
-        //     'provider' => $provider,
-        //     'email' => $providerUser->getEmail(),
-        //     'token' => $providerUser->token,
-        // ]);
     }
 }

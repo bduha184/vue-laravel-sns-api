@@ -3,13 +3,10 @@ import { ref, onMounted, computed } from "vue";
 import {useRoute } from "vue-router";
 import router from "../js/router";
 import axios from "axios";
-import { useAuthStore } from "../js/store/auth";
 
-const auth = useAuthStore();
+
 const route = useRoute();
-
 const mailAlert = ref('')
-
 const token = route.query.token;
 const email = route.query.email;
 const password = ref('');
