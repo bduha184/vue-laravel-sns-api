@@ -28,46 +28,42 @@ export const useFollowStore = defineStore({
         withCredentials: true,
       });
       const auth = useAuthStore();
-      await api.get("/sanctum/csrf-cookie").then(async (res) => {
-        await api
-          .get(`/api/user/${userName}/followers`)
-          .then((res) => {
-            if (res.data != 404) {
-              const followers = res.data.followers;
-              const isFollowedByAuth = followers.find(
-                (follower) => follower.name == auth.isLoggedIn.name
-              );
-              if (isFollowedByAuth) {
-                this.status = true;
-              }
-              this.followers = followers;
-              this.followerCount = Object.keys(followers).length;
+      await api
+        .get(`/api/user/${userName}/followers`)
+        .then((res) => {
+          if (res.data != 404) {
+            const followers = res.data.followers;
+            const isFollowedByAuth = followers.find(
+              (follower) => follower.name == auth.isLoggedIn.name
+            );
+            if (isFollowedByAuth) {
+              this.status = true;
             }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
+            this.followers = followers;
+            this.followerCount = Object.keys(followers).length;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     async fetchFollowees(userName) {
       const api = axios.create({
         baseURL: "http://localhost:8000",
         withCredentials: true,
       });
-      await api.get("/sanctum/csrf-cookie").then(async (res) => {
-        await api
-          .get(`/api/user/${userName}/followees`)
-          .then((res) => {
-            if (res.data != 404) {
-              const followees = res.data.followees;
-              this.followees = followees;
-              this.followeeCount = Object.keys(followees).length;
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
+      await api
+        .get(`/api/user/${userName}/followees`)
+        .then((res) => {
+          if (res.data != 404) {
+            const followees = res.data.followees;
+            this.followees = followees;
+            this.followeeCount = Object.keys(followees).length;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   // persist: true,

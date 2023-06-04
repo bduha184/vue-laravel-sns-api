@@ -18,9 +18,7 @@ class ArticleController extends Controller
      */
     public function index($page)
     {
-        // return response($page);
-        return Article::latest()->with(['user', 'tags', 'likes'])->take($page*10)->get();
-        // return Article::latest()->with(['user', 'tags', 'likes'])->get();
+        return Article::latest()->with(['user', 'tags', 'likes'])->offset($page*10-1)->limit(10)->get();
     }
 
     /**

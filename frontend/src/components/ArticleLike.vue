@@ -1,9 +1,9 @@
 <script setup>
 import axios from "axios";
 import { computed, ref } from "vue";
+import router from "../js/router";
 import { useArticleStore } from "../js/store/articles";
 import { useAuthStore } from "../js/store/auth";
-
 const props = defineProps({
   article: Object,
 });
@@ -28,6 +28,7 @@ const switchIsLikedBy = async () => {
       await api.put(`/api/articles/${props.article.id}/like`).then((res) => {
         isLikedBy.value = true;
         window.location.href="/";
+        // router.push('/');
 
       });
     });
@@ -45,6 +46,7 @@ const getCountLikes = computed(() => {
   );
   return countLikes.value = Object.keys(article.likes).length;
 });
+
 const authLikesArticles = computed(() => {
   const articles = articlesStore.getArticles;
   const likeArticles = articles.flatMap((article) => {
@@ -56,6 +58,8 @@ const authLikesArticles = computed(() => {
     }
   });
 });
+
+console.log(getCountLikes.value)
 </script>
 <template>
   <div>

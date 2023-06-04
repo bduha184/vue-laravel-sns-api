@@ -1,59 +1,35 @@
 <script setup>
-import { onMounted, computed, ref } from "vue";
-import { useArticleStore } from "../js/store/articles";
+import { onMounted, ref } from "vue";
 import Card from "../components/Card.vue";
-import InfiniteLoading from "v3-infinite-loading";
-import axios from "axios";
-import "v3-infinite-loading/lib/style.css";
+import { useArticleStore } from "../js/store/articles";
 
-const articles = useArticleStore();
-// const getArticles = computed(() => {
-//   return articles.getArticles;
-// });
+const articlesStore = useArticleStore();
 
-// onMounted(() => {
-//   articles.fetchArticles();
-// });
+const observer = ref(null);
 
-const api = axios.create({
-  baseURL: "http://localhost:8000",
-  withCredentials: true,
-});
+const fetchArticles = articlesStore.articles;
 
-const loadArticles = ref([]);
-let getArticlesCount = 10;
-const load = async ($state) => {
-  page++;
-  await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api
-      .get(`/api/articles/${page}`)
-      .then((res) => {
-        console.log(res.data)
-        const fetchArticles = res.data;
-        if (loadArticles.value >= 100) {
-          $state.complete();
-        } else {
-
-          loadArticles.value.push(...fetchArticles);
-          $state.loaded();
-        }
-      })
-      .catch((error) => {
-        $state.error();
-      });
+onMounted(()=>{
+  observer.value = new IntersectionObserver((entries)=> {
+    const entry = entries[0];
+    if(entry && entry.isIntersecting){
+      console.log('画面に入りました');
+      articlesStore.fetchArticles();
+    }
   });
-};
+  const observeElm = document.getElementById('observe');
+  observer.value.observe(observeElm);
+  console.log(observer.value)
+})
 
 
-console.log(loadArticles.value);
-// console.log(getArticles.value)
 </script>
 
 <template>
   <div class="container" >
-    <div v-for="article in loadArticles" :key="article.id">
+    <div v-for="article in fetchArticles" :key="article.id">
       <Card :article="article" id="article-container"/>
     </div>
-    <InfiniteLoading target="#article-container" @infinite="load" />
+    <p id="observe"></p>
   </div>
 </template>

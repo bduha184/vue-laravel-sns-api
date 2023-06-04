@@ -5,10 +5,10 @@ export const useTagsStore = defineStore({
   id: "tags",
   persist: true,
   state: () => ({
-    tagArticles:[]
+    tagArticles: [],
   }),
   getters: {
-    getTagArticles:(state)=>state.tagArticles
+    getTagArticles: (state) => state.tagArticles,
   },
   actions: {
     async fetchTag(name) {
@@ -16,15 +16,13 @@ export const useTagsStore = defineStore({
         baseURL: "http://localhost:8000",
         withCredentials: true,
       });
-      await api.get("/sanctum/csrf-cookie").then(async (res) => {
-        await api.get(`/api/tags/${name}`)
-          .then((res) => {
-            this.tagArticles = res.data.flat();
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
+      await api.get(`/api/tags/${name}`)
+        .then((res) => {
+          this.tagArticles = res.data.flat();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 });

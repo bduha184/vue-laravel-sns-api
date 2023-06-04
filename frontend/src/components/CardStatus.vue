@@ -1,6 +1,7 @@
 <script setup>
 import axios from "axios";
 import { RouterLink } from "vue-router";
+import router from "../js/router";
 import { useAuthStore } from "../js/store/auth";
 
 const props = defineProps({
@@ -17,10 +18,12 @@ const destroy = async (id) => {
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.delete(`/api/articles/${id}`).then((res) => {
       if (res.status == 200) {
-        window.location.href="/";
+        router.push('/')
+        // window.location.href="/";
       }else {
         alert(res.data);
-        window.location.href="/";
+        router.push('/')
+        // window.location.href="/";
       }
     });
   });
