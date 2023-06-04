@@ -18,7 +18,7 @@ const props = defineProps({
           :to="{
             name: 'user',
             query: {
-              userId:  props.follow.id,
+              userName:  props.follow.name,
             },
           }"
           class="text-dark"
@@ -26,7 +26,9 @@ const props = defineProps({
           <i class="fas fa-user-circle fa-3x"></i>
         </RouterLink>
         <FollowButton
-        v-if="auth.isLoggedIn.status && auth.isLoggedIn.userId != props.follow.id"
+        v-if="
+        auth.isLoggedIn.status &&
+        auth.isLoggedIn.name != props.follow.name"
         />
       </div>
       <h2 class="h5 card-title m-0">
@@ -34,7 +36,7 @@ const props = defineProps({
         :to="{
             name: 'user',
             query: {
-              userId:  props.follow.id,
+              userName:  props.follow.name,
             },
           }"
         class="text-dark">

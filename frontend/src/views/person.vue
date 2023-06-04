@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, computed, reactive } from "vue";
+import { onMounted, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useFollowStore } from "../js/store/follows";
 import FollowCard from '../components/FollowCard.vue'
@@ -7,7 +7,7 @@ import UserHeader from "../components/UserHeader.vue";
 
 const route = useRoute();
 const routeFollow = route.query.follow;
-const routeUserId = route.query.userId;
+const routeUserName = route.query.userName;
 
 
 const follows = useFollowStore();
@@ -19,8 +19,8 @@ const getFollowees = computed(() => {
 });
 
 onMounted(() => {
-  follows.fetchFollowees(routeUserId);
-  follows.fetchFollowers(routeUserId);
+  follows.fetchFollowees(routeUserName);
+  follows.fetchFollowers(routeUserName);
   propsFollows();
 });
 
@@ -30,11 +30,11 @@ const tabSelect = reactive({
 });
 
 const propsFollows = () => {
-   if(routeFollow === 'followees'){
+   if(routeFollow == 'followees'){
       tabSelect.followees = true;
       tabSelect.followers = false;
     }
-   if(routeFollow === 'followers'){
+   if(routeFollow == 'followers'){
      tabSelect.followers = true;
       tabSelect.followees = false;
     }
@@ -49,13 +49,18 @@ const showFollowers = () => {
   tabSelect.followers = true;
   tabSelect.followees = false;
 };
-
 const switchFollows = computed(() => {
 
-  if (routeFollow === "followees" || tabSelect.followees) {
+  if (routeFollow == "followees" || tabSelect.followees) {
+    if(tabSelect.followers){
+      return getFollowers.value;
+    }
     return getFollowees.value;
   }
-  if (routeFollow === "followers" || tabSelect.followers) {
+  if (routeFollow == "followers" || tabSelect.followers) {
+    if(tabSelect.followees){
+      return getFollowees.value;
+    }
     return getFollowers.value;
   }
 });

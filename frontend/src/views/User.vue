@@ -1,25 +1,16 @@
 <script setup>
-import axios from "axios";
-import { onMounted, ref, computed, reactive } from "vue";
+import { computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 import Card from "../components/Card.vue";
 import { useArticleStore } from "../js/store/articles";
 import UserHeader from "../components/UserHeader.vue";
 
 const articles = useArticleStore();
-
 const route = useRoute();
-const userId = route.query.userId;
+const userName = route.query.userName;
 
 const getArticles = computed(() => {
   return articles.getArticles;
-});
-const Articles = computed(() => {
-  return articles.articles;
-});
-
-onMounted(() => {
-  likesArticles();
 });
 
 const tabSelect = reactive({
@@ -36,29 +27,34 @@ const showLikesArticles = () => {
   tabSelect.userArticles = false;
 };
 
-const api = axios.create({
-  baseURL: "http://localhost:8000",
-  withCredentials: true,
-});
-
-const likesArticle = ref({});
-
-const likesArticles = async () => {
-  await api.get("/sanctum/csrf-cookie").then(async (res) => {
-    await api.get(`/api/user/${userId}/likes`).then((res) => {
-      likesArticle.value = res.data.flat();
-      });
+const getLikeArticles = computed(() => {
+  const articles = getArticles.value;
+  const likeArticlesId = articles.flatMap((article) => {
+    return article.likes.map((like) => {
+      if(like.name == userName){
+        return like.pivot.article_id
+      }
+    });
   });
-};
+  return articles.filter((article)=>{
+    for(let likeId of likeArticlesId){
+      if(likeId == article.id){
+        return article;
+      }
+    }
+  });
+
+});
 
 const switchArticles = computed(() => {
   if (tabSelect.userArticles) {
-    return getArticles.value.filter((article) => article.user_id == userId);
+    return getArticles.value.filter((article) => article.user.name == userName);
   }
   if (tabSelect.likesArticles) {
-    return likesArticle.value;
+    return getLikeArticles.value
   }
 });
+
 
 </script>
 

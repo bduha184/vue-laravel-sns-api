@@ -6,7 +6,7 @@ import Create from '../views/Create.vue'
 import Edit from '../views/Edit.vue'
 import Login from '../views/Login.vue'
 import User from '../views/User.vue'
-import Email from '../views/Email.vue'
+import Email from '../views/EmailForPasswordReset.vue'
 import Person from '../views/person.vue'
 import Tag from '../views/Tags/Show.vue'
 import ResetPassword from '../views/ResetPassword.vue'
@@ -21,7 +21,7 @@ const router = createRouter({
     {
       path: '/',
       name:'index',
-      component: Index
+      component: Index,
     },
     {
       path: '/articles/:articleId',

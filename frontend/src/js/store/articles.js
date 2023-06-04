@@ -3,12 +3,13 @@ import axios from "axios";
 
 export const useArticleStore = defineStore({
   id: "articles",
-  persist: true,
+  // persist: true,
   state: () => ({
-    articles:[]
+    articles: [],
+    getArticlesCount:0,
   }),
   getters: {
-    getArticles:(state)=>state.articles
+    getArticles: (state) => state.articles,
   },
   actions: {
     async fetchArticles() {
@@ -16,15 +17,16 @@ export const useArticleStore = defineStore({
         baseURL: "http://localhost:8000",
         withCredentials: true,
       });
-      await api.get("/sanctum/csrf-cookie").then(async (res) => {
-        await api.get(`/api/articles/`)
-          .then((res) => {
-            this.articles = res.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
+      await api
+        .get(`/api/articles/${this.getArticlesCount}`)
+        .then((res) => {
+           const fetchArticles = res.data;
+          this.articles.push(...fetchArticles);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+        this.getArticlesCount++;
     },
   },
 });

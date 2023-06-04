@@ -1,6 +1,6 @@
 <script setup>
 import Form from "../components/Form.vue";
-import { ref, onMounted, reactive } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import router from "../js/router";
 
@@ -13,7 +13,7 @@ const submit = async (title, body,tags) => {
   });
   await api.get("/sanctum/csrf-cookie").then(async (res) => {
     await api.post("/api/articles", { title, body,tags}).then((res) => {
-      if (res.status == 200) {
+      if(res.status !=404){
         router.push("/");
       }
     });

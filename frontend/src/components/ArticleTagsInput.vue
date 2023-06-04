@@ -1,7 +1,11 @@
 <script setup>
 import Vue3TagsInput from "vue3-tags-input";
-import { ref } from "vue";
+import { compile, computed, ref } from "vue";
 
+
+const props = defineProps({
+  articleData:Object
+})
 const tags = ref([]);
 const emit = defineEmits(['emitInputTags']);
 
@@ -9,12 +13,17 @@ const emitTags = () =>{
   emit('emitInputTags',tags.value);
 }
 
+const propsArticleData = computed(()=> {
+  return tags.value = props.articleData.tags
+})
+
 </script>
 
 <template>
   <div>
       <vue3-tags-input
       :tags="tags"
+      :propsArticleData = "propsArticleData"
       @keydown.enter="emitTags"
       placeholder="タグを5個まで入力できます"
       @on-tags-changed="newTags => tags = newTags"

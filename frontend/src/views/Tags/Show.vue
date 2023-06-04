@@ -1,11 +1,9 @@
 <script setup>
-import UserHeader from "../../components/UserHeader.vue";
-import CardVue from "../../components/Card.vue";
+import Card from "../../components/Card.vue";
 import { useRoute } from "vue-router";
 import { computed,onMounted } from "vue";
 import { useTagsStore } from "../../js/store/tags";
 
-// const articles = useArticleStore();
 const route = useRoute();
 const routeTagName = route.query.tagName;
 
@@ -13,13 +11,12 @@ const tags = useTagsStore();
 const getTagArticles = computed(() => {
   return tags.getTagArticles;
 });
-// const getArticlesCount = computed(()=> {
-//   return getTagArticles.length;
-// })
 
 onMounted(() => {
   tags.fetchTag(routeTagName);
 });
+
+
 </script>
 
 <template>
@@ -34,7 +31,7 @@ onMounted(() => {
   v-for="article in getTagArticles"
   :key="article.id"
   >
-    <CardVue :article="article"/>
+    <Card :article="article"/>
   </div>
   </div>
 </template>

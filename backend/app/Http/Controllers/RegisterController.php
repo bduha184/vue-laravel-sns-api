@@ -21,23 +21,6 @@ class RegisterController extends Controller
         return response()->json( Response::HTTP_OK);
     }
 
-    // public function showProviderUserRegistrationForm(Request $request,string $provider){
-
-    //     // $providerUser = Socialite::driver($provider)->userFromToken($token);
-
-    //     // return response()->json([
-    //     //     'provider' => $provider,
-    //     //     'email' => $providerUser->getEmail(),
-    //     //     'token' => $token,
-    //     // ]);
-    //     //    return response()->json([
-    //     //         'res' =>$request,
-    //     //         'provider' =>$provider,
-
-    //     // ]);
-
-    // }
-
     public function registerProviderUser(Request $request, string $provider)
     {
 

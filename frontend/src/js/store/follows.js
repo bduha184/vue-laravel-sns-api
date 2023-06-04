@@ -1,64 +1,70 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { useAuthStore } from "./auth";
 
 export const useFollowStore = defineStore({
   id: "follows",
   state: () => ({
     status: false,
     followerCount: 0,
-    followeeCount:0,
-    followees:[],
-    followers:[],
+    followeeCount: 0,
+    followees: [],
+    followers: [],
   }),
-  persist: true,
   getters: {
     isFollowedBy: (state) => state.status,
     getFollowees: (state) => state.followees,
     getFollowers: (state) => state.followers,
-    getFollowerCount: (state) => state.followerCount,
     getFolloweeCount: (state) => state.followeeCount,
+    getFollowerCount: (state) => state.followerCount,
   },
   actions: {
     setFollowStatus(status) {
       this.status = status;
     },
-    async fetchFollowers(userId) {
+    async fetchFollowers(userName) {
       const api = axios.create({
         baseURL: "http://localhost:8000",
         withCredentials: true,
       });
-      await api.get("/sanctum/csrf-cookie").then(async (res) => {
-        await api.get(`/api/user/${userId}/followers`)
-          .then((res) => {
-            if (res.status == 200) {
-              const followers = res.data.followers;
-              this.followers = followers;
-              this.followerCount = Object.keys(followers).length;
+      const auth = useAuthStore();
+      await api
+        .get(`/api/user/${userName}/followers`)
+        .then((res) => {
+          if (res.data != 404) {
+            const followers = res.data.followers;
+            const isFollowedByAuth = followers.find(
+              (follower) => follower.name == auth.isLoggedIn.name
+            );
+            if (isFollowedByAuth) {
+              this.status = true;
             }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
+            this.followers = followers;
+            this.followerCount = Object.keys(followers).length;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    async fetchFollowees(userId) {
+    async fetchFollowees(userName) {
       const api = axios.create({
         baseURL: "http://localhost:8000",
         withCredentials: true,
       });
-      await api.get("/sanctum/csrf-cookie").then(async (res) => {
-        await api.get(`/api/user/${userId}/followees`)
-          .then((res) => {
-            if (res.status == 200) {
-              const followees = res.data.followees;
-              this.followees= followees;
-              this.followeeCount = Object.keys(followees).length;
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
+      await api
+        .get(`/api/user/${userName}/followees`)
+        .then((res) => {
+          if (res.data != 404) {
+            const followees = res.data.followees;
+            this.followees = followees;
+            this.followeeCount = Object.keys(followees).length;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
+  // persist: true,
 });

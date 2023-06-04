@@ -1,5 +1,4 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
 import { RouterLink } from "vue-router";
 import router from "../js/router";
 import axios from "axios";
@@ -48,7 +47,7 @@ const googleLogin = async (provider) => {
             </button>
             <div class="card-text">
               <form method="POST">
-                <input type="hidden" name="_token" :value="qwer12345" />
+                <input type="hidden" name="_token" v-model="email" />
                 <div class="md-form">
                   <label for="email">メールアドレス</label>
                   <input
